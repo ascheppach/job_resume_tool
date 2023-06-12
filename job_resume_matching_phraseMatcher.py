@@ -5,8 +5,6 @@
 
 import PyPDF2
 import os
-from os import listdir
-from os.path import isfile, join
 from io import StringIO
 from collections import Counter
 import en_core_web_sm
