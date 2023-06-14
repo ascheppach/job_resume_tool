@@ -107,7 +107,7 @@ def create_resume_vectorstore(resume_directory):
     document_chunks = text_to_wholeDocs(cleaned_text_pdf)
 
     # Step 3 + 4: Generate embeddings and store them in DB
-    embeddings = OpenAIEmbeddings(openai_api_key="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")
+    embeddings = OpenAIEmbeddings(openai_api_key="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")
     vector_store = Chroma.from_documents(
         document_chunks,
         embeddings,

@@ -51,11 +51,11 @@ def get_skill_match(applicant, job):
         else:
             resume_chunks = text_splitter.split_text(resume[idx].page_content)
 
-    embeddings = OpenAIEmbeddings(openai_api_key="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")
+    embeddings = OpenAIEmbeddings(openai_api_key="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")
     knowledge_base = FAISS.from_texts(resume_chunks, embeddings)
     question = f"What are the candidate's technical skills? Please return the answer in a concise manner, no more than 350 words. If not found, return 'Not provided'"
     docs = knowledge_base.similarity_search(question)
-    llm = OpenAI(openai_api_key="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", temperature=0.0, model_name="text-davinci-003", max_tokens="2000")
+    llm = OpenAI(openai_api_key="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", temperature=0.0, model_name="text-davinci-003", max_tokens="2000")
     chain = load_qa_chain(llm, chain_type="stuff")
     resume_summary = chain.run(input_documents=docs, question=question)
 
@@ -86,9 +86,9 @@ def get_workExperience_and_Degree(applicant):
         else:
             resume_chunks = text_splitter.split_text(resume[idx].page_content)
 
-    embeddings = OpenAIEmbeddings(openai_api_key="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")
+    embeddings = OpenAIEmbeddings(openai_api_key="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")
     knowledge_base = FAISS.from_texts(resume_chunks, embeddings)
-    llm = OpenAI(openai_api_key="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", temperature=0.0,
+    llm = OpenAI(openai_api_key="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", temperature=0.0,
                  model_name="text-davinci-003", max_tokens="2000")
     chain = load_qa_chain(llm, chain_type="stuff")
 
@@ -125,9 +125,9 @@ def get_applicantName(applicant):
         else:
             resume_chunks = text_splitter.split_text(resume[idx].page_content)
 
-    embeddings = OpenAIEmbeddings(openai_api_key="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")
+    embeddings = OpenAIEmbeddings(openai_api_key="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")
     knowledge_base = FAISS.from_texts(resume_chunks, embeddings)
-    llm = OpenAI(openai_api_key="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", temperature=0.0,
+    llm = OpenAI(openai_api_key="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", temperature=0.0,
                  model_name="text-davinci-003", max_tokens="2000")
     chain = load_qa_chain(llm, chain_type="stuff")
 
@@ -159,7 +159,7 @@ def create_and_store_job_summaries(job_directory):
         job = documents[idx].page_content
         job_chunks = text_splitter.split_text(job)
 
-        embeddings = OpenAIEmbeddings(openai_api_key="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")
+        embeddings = OpenAIEmbeddings(openai_api_key="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")
         knowledge_base = FAISS.from_texts(job_chunks, embeddings)
 
         question_job = f"What are the skills and profile needed for this job? Please return the answer in a concise manner, no more than 250 words. If not found, return 'Not provided'"
@@ -198,7 +198,7 @@ def create_and_store_resume_summaries(resume_directory):
         resume = documents[idx].page_content
         resume_chunks = text_splitter.split_text(resume)
 
-        embeddings = OpenAIEmbeddings(openai_api_key="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")
+        embeddings = OpenAIEmbeddings(openai_api_key="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")
         knowledge_base = FAISS.from_texts(resume_chunks, embeddings)
 
         # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl", model_kwargs={"device": "cpu"})

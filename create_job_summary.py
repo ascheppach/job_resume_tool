@@ -27,7 +27,7 @@ def create_vectorstore(job_directory):
         )
         doc_chunks.append(doc)
 
-    embeddings = OpenAIEmbeddings(openai_api_key="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")
+    embeddings = OpenAIEmbeddings(openai_api_key="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")
 
     job_vector_store = Chroma.from_documents(
         doc_chunks,
@@ -44,9 +44,9 @@ def make_chain():
     model = ChatOpenAI(
         model_name="gpt-3.5-turbo",
         temperature="0",
-        openai_api_key="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"
+        openai_api_key="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"
     )
-    embedding = OpenAIEmbeddings(openai_api_key="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")
+    embedding = OpenAIEmbeddings(openai_api_key="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")
 
     job_vector_store = Chroma(
         collection_name="job_embeddings",
