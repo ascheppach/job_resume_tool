@@ -198,7 +198,10 @@ def create_plot_resume_to_job(data):
             plt.text(x + width / 2, y + height / 2, '{}%'.format(round(height*100),2), ha='center', va='center')
             idx += 1
     plt.xticks(np.array(x_pos), categories, rotation='vertical')
-    plt.show()
+    plt.savefig('skill_plot.png')
+    # plt.show()
+
+
 
 # data = new_data
 def sort_applicants(data, important_skills):
@@ -219,11 +222,10 @@ def sort_applicants(data, important_skills):
     return df_ordered
 
 
-resume_directory = 'C:/Users/SEPA/lanchain_ir2/Resume_data_pdf'  # enter your path here where you saved the resumes
-skill_file = 'C:/Users/SEPA/lanchain_ir2/job_demand.xlsx'
-new_data = compare_resumes_to_job(resume_directory, skill_file)
+#resume_directory = 'C:/Users/SEPA/lanchain_ir2/Resume_data_pdf'  # enter your path here where you saved the resumes
+#skill_file = 'C:/Users/SEPA/lanchain_ir2/job_demand.xlsx'
+#new_data = compare_resumes_to_job(resume_directory, skill_file)
 
-important_skills = ['NLP', 'MLOps']
-new_data = sort_applicants(new_data, important_skills)
-
-create_plot_resume_to_job(new_data)
+#important_skills = ['NLP', 'MLOps']
+#new_data = sort_applicants(new_data, important_skills)
+#create_plot_resume_to_job(new_data)
