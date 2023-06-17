@@ -7,6 +7,7 @@ const CompareSkillsPage = () => {
   const [currentSkill, setCurrentSkill] = useState('');
   const inputRef2 = useRef(null);
   const [skillList, setSkillList] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleSkillChange = event => {
     setSkill(event.target.value);
@@ -40,8 +41,20 @@ const CompareSkillsPage = () => {
     setSkills([]);
   };
 
+  const handleFileChange = event => {
+    setSelectedFile(event.target.files[0]);
+  };
+
   const handleSearchClick = () => {
-    axios.post('http://127.0.0.1:5000/skillList', skillList)
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    formData.append('skillList', JSON.stringify(skillList));
+
+    axios.post('http://127.0.0.1:5000/skillList', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
       .then(response => {
         console.log('Skill added successfully');
         setSkillList(prevSkillList => [...prevSkillList, skillList]);
@@ -55,7 +68,12 @@ const CompareSkillsPage = () => {
 
   return (
     <div>
-      <h1>Search for Skill Sets</h1>
+      <h1>Step 1: Define Important Skills</h1>
+
+      <h1>Step 2: Upload Resumes</h1>
+      <input type="file" onChange={handleFileChange} />
+
+      <h1>Step 3: Search for Skill Sets</h1>
 
       <form onSubmit={handleSkillSubmit}>
         <div>
@@ -102,8 +120,13 @@ const CompareSkillsPage = () => {
         ))}
       </ul>
 
-      <div style={{ marginTop: '20px' }}>
-        <button onClick={handleSearchClick}>Search for applicants</button>
+      <div style={{ textAlign: 'center', marginTop: '20px' }}>
+        <button
+          onClick={handleSearchClick}
+          style={{ width: '200px', height: '40px', fontSize: '16px' }}
+        >
+          Search for applicants
+        </button>
       </div>
     </div>
   );
