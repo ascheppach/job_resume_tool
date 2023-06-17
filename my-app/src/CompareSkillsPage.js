@@ -40,7 +40,8 @@ const CompareSkillsPage = () => {
     setSkills([]);
   };
 
-  axios.post('http://127.0.0.1:5000/skillList', skillList)
+  const handleSearchClick = () => {
+    axios.post('http://127.0.0.1:5000/skillList', skillList)
       .then(response => {
         console.log('Skill added successfully');
         setSkillList(prevSkillList => [...prevSkillList, skillList]);
@@ -50,6 +51,7 @@ const CompareSkillsPage = () => {
       .catch(error => {
         console.error('Error adding skill:', error);
       });
+  };
 
   return (
     <div>
@@ -99,6 +101,10 @@ const CompareSkillsPage = () => {
           </li>
         ))}
       </ul>
+
+      <div style={{ marginTop: '20px' }}>
+        <button onClick={handleSearchClick}>Search for applicants</button>
+      </div>
     </div>
   );
 };
