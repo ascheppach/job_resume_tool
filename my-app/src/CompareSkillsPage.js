@@ -5,6 +5,7 @@ const CompareSkillsPage = () => {
   const [skills, setSkills] = useState([]);
   const [currentSkill, setCurrentSkill] = useState('');
   const inputRef2 = useRef(null);
+  const [skillList, setSkillList] = useState([]);
 
   const handleSkillChange = event => {
     setSkill(event.target.value);
@@ -33,12 +34,14 @@ const CompareSkillsPage = () => {
     // Process the skill and corresponding skill catalogue here (e.g., make API calls, update state, etc.)
     console.log('Skill:', skill);
     console.log('Corresponding skill catalogue:', skills);
+    setSkillList(prevSkillList => [...prevSkillList, { skill, skills }]);
+    setSkill('');
     setSkills([]);
   };
 
   return (
     <div>
-      <h1>Compare Skills Page</h1>
+      <h1>Search for Skill Sets</h1>
 
       <form onSubmit={handleSkillSubmit}>
         <div>
@@ -75,6 +78,15 @@ const CompareSkillsPage = () => {
         </div>
         <button type="submit">Submit</button>
       </form>
+
+      <h2>Selected Skill Set:</h2>
+      <ul>
+        {skillList.map((item, index) => (
+          <li key={index}>
+            Skill: {item.skill}, Corresponding Skill Catalogue: {item.skills.join(', ')}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
