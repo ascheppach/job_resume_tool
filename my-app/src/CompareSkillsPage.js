@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import axios from 'axios';
 
 const CompareSkillsPage = () => {
   const [skill, setSkill] = useState('');
@@ -38,6 +39,17 @@ const CompareSkillsPage = () => {
     setSkill('');
     setSkills([]);
   };
+
+  axios.post('http://127.0.0.1:5000/skillList', skillList)
+      .then(response => {
+        console.log('Skill added successfully');
+        setSkillList(prevSkillList => [...prevSkillList, skillList]);
+        setSkill('');
+        setSkills([]);
+      })
+      .catch(error => {
+        console.error('Error adding skill:', error);
+      });
 
   return (
     <div>
