@@ -10,7 +10,7 @@ const CompareSkillsPage = () => {
   const [currentSkill, setCurrentSkill] = useState('');
   const inputRef2 = useRef(null);
   const [skillList, setSkillList] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [importantSkills, setImportantSkills] = useState([]);
 
   const handleSkillChange = event => {
@@ -46,12 +46,15 @@ const CompareSkillsPage = () => {
   };
 
   const handleFileChange = event => {
-    setSelectedFile(event.target.files[0]);
+    const files = Array.from(event.target.files);
+    setSelectedFiles(files);
   };
 
   const handleSearchClick = () => {
     const formData = new FormData();
-    formData.append('file', selectedFile);
+    selectedFiles.forEach((file, index) => {
+      formData.append(`file${index}`, file);
+    });
     formData.append('skillList', JSON.stringify(skillList));
 
     axios.post('http://127.0.0.1:5000/skillList', formData, {
@@ -84,7 +87,7 @@ const CompareSkillsPage = () => {
       </DndProvider>
 
       <h1>Step 2: Upload Resumes</h1>
-      <input type="file" onChange={handleFileChange} />
+      <input type="file" onChange={handleFileChange} multiple />
 
       <h1>Step 3: Search for Skill Sets</h1>
 
