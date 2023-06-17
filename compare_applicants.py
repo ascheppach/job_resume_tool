@@ -53,13 +53,13 @@ def get_skill_match(applicant, job):
 
     embeddings = OpenAIEmbeddings(openai_api_key="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")
     knowledge_base = FAISS.from_texts(resume_chunks, embeddings)
-    question = f"What are the candidate's technical skills? Please return the answer in a concise manner, no more than 350 words. If not found, return 'Not provided'"
+    question = f"What are the candidate's technical Corresponding skill catalogue? Please return the answer in a concise manner, no more than 350 words. If not found, return 'Not provided'"
     docs = knowledge_base.similarity_search(question)
     llm = OpenAI(openai_api_key="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", temperature=0.0, model_name="text-davinci-003", max_tokens="2000")
     chain = load_qa_chain(llm, chain_type="stuff")
     resume_summary = chain.run(input_documents=docs, question=question)
 
-    summary_question = f"Job requirements: {{{job_text}}}" + f"Applicant skills: {{{resume_summary}}}" + "Please return a summary about how well the skills of the applicant and the requirments of this job match together (limited to 300 words);'"
+    summary_question = f"Job requirements: {{{job_text}}}" + f"Applicant Corresponding Skill: {{{resume_summary}}}" + "Please return a summary about how well the Corresponding skill catalogue of the applicant and the requirments of this job match together (limited to 300 words);'"
     matching_summary = ask_openAI(summary_question)
 
     return matching_summary
@@ -162,7 +162,7 @@ def create_and_store_job_summaries(job_directory):
         embeddings = OpenAIEmbeddings(openai_api_key="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")
         knowledge_base = FAISS.from_texts(job_chunks, embeddings)
 
-        question_job = f"What are the skills and profile needed for this job? Please return the answer in a concise manner, no more than 250 words. If not found, return 'Not provided'"
+        question_job = f"What are the Corresponding skill catalogue and profile needed for this job? Please return the answer in a concise manner, no more than 250 words. If not found, return 'Not provided'"
 
         # hier macht er eine Zusammenfassung eben: von den ursprünglich 20 job_chunks haben wir jetzt die 4 ähnlichsten übrig
         docs_job = knowledge_base.similarity_search(question_job)
@@ -204,7 +204,7 @@ def create_and_store_resume_summaries(resume_directory):
         # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl", model_kwargs={"device": "cpu"})
         # knowledge_base = FAISS.from_texts(chunks, embeddings)
 
-        question_resume = f"What is this candidate's technical skills? Please return the answer in a concise manner, no more than 250 words. If not found, return 'Not provided'"
+        question_resume = f"What is this candidate's technical Corresponding skill catalogue? Please return the answer in a concise manner, no more than 250 words. If not found, return 'Not provided'"
 
         # hier macht er eine Zusammenfassung eben: von den ursprünglich 20 job_chunks haben wir jetzt die 4 ähnlichsten übrig
         docs_resume = knowledge_base.similarity_search(question_resume)

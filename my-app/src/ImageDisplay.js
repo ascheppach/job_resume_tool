@@ -10,7 +10,7 @@ class ImageDisplay extends Component {
   }
 
   componentDidMount() {
-    fetch('/compare_skills')
+    fetch('/compare_Corresponding skill catalogue')
       .then(response => {
         if (response.ok) {
           return response.blob();

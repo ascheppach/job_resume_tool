@@ -204,15 +204,15 @@ def create_plot_resume_to_job(data):
 
 
 # data = new_data
-def sort_applicants(data, important_skills):
+def sort_applicants(data, important_Corresponding skill catalogue):
 
     # Reorder the columns
-    sorted_columns = important_skills + [col for col in data.columns if col not in important_skills]
+    sorted_columns = important_Corresponding skill catalogue + [col for col in data.columns if col not in important_Corresponding skill catalogue]
     df = data[sorted_columns]
 
     scores, indices = [], []
     for index, row in df.iterrows():
-        scores.append(np.sum(row[important_skills]))
+        scores.append(np.sum(row[important_Corresponding skill catalogue]))
         indices.append(index)
     summary_df = pd.DataFrame({ 'Indices': indices, 'Scores': scores})
     df_sorted = summary_df.sort_values(by='Scores', ascending=False)
@@ -226,6 +226,6 @@ def sort_applicants(data, important_skills):
 #skill_file = 'C:/Users/SEPA/lanchain_ir2/job_demand.xlsx'
 #new_data = compare_resumes_to_job(resume_directory, skill_file)
 
-#important_skills = ['NLP', 'MLOps']
-#new_data = sort_applicants(new_data, important_skills)
+#important_Corresponding skill catalogue = ['NLP', 'MLOps']
+#new_data = sort_applicants(new_data, important_Corresponding skill catalogue)
 #create_plot_resume_to_job(new_data)

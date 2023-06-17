@@ -1,37 +1,80 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 const CompareSkillsPage = () => {
-  const [imageData, setImageData] = useState(null);
-  const [error, setError] = useState(null);
+  const [skill, setSkill] = useState('');
+  const [skills, setSkills] = useState([]);
+  const [currentSkill, setCurrentSkill] = useState('');
+  const inputRef2 = useRef(null);
 
-  useEffect(() => {
-    fetch('/compare_skills')
-      .then(response => {
-        if (response.ok) {
-          return response.blob();
-        }
-        throw new Error('Error retrieving image');
-      })
-      .then(blob => {
-        setImageData(URL.createObjectURL(blob));
-      })
-      .catch(error => {
-        setError(error.message);
-      });
-  }, []);
+  const handleSkillChange = event => {
+    setSkill(event.target.value);
+  };
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  const handleSkillsChange = event => {
+    setCurrentSkill(event.target.value);
+  };
 
-  if (!imageData) {
-    return <div>Loading image...</div>;
-  }
+  const handleSkillsKeyDown = event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (currentSkill.trim() !== '') {
+        setSkills(prevSkills => [...prevSkills, currentSkill]);
+        setCurrentSkill('');
+      }
+    }
+  };
+
+  const handleTagDelete = index => {
+    setSkills(prevSkills => prevSkills.filter((_, i) => i !== index));
+  };
+
+  const handleSkillSubmit = event => {
+    event.preventDefault();
+    // Process the skill and corresponding skill catalogue here (e.g., make API calls, update state, etc.)
+    console.log('Skill:', skill);
+    console.log('Corresponding skill catalogue:', skills);
+    setSkills([]);
+  };
 
   return (
     <div>
-      <h1>Image Display</h1>
-      <img src={imageData} alt="Image" />
+      <h1>Compare Skills Page</h1>
+
+      <form onSubmit={handleSkillSubmit}>
+        <div>
+          <label>
+            Skill:
+            <input
+              type="text"
+              value={skill}
+              onChange={handleSkillChange}
+              placeholder="Enter a skill..."
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Corresponding skill catalogue:
+            <div className="tag-container">
+              {skills.map((skill, index) => (
+                <div key={index} className="tag">
+                  {skill}
+                  <button onClick={() => handleTagDelete(index)}>x</button>
+                </div>
+              ))}
+            </div>
+            <input
+              ref={inputRef2}
+              type="text"
+              value={currentSkill}
+              onChange={handleSkillsChange}
+              onKeyDown={handleSkillsKeyDown}
+              placeholder="Enter skills..."
+            />
+          </label>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
     </div>
   );
 };
