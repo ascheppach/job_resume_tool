@@ -1,5 +1,8 @@
 import React, { useState, useRef } from 'react';
+import { WithContext as TagInput } from 'react-tag-input';
 import axios from 'axios';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const CompareSkillsPage = () => {
   const [skill, setSkill] = useState('');
@@ -8,6 +11,7 @@ const CompareSkillsPage = () => {
   const inputRef2 = useRef(null);
   const [skillList, setSkillList] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [importantSkills, setImportantSkills] = useState([]);
 
   const handleSkillChange = event => {
     setSkill(event.target.value);
@@ -69,6 +73,15 @@ const CompareSkillsPage = () => {
   return (
     <div>
       <h1>Step 1: Define Important Skills</h1>
+
+      <DndProvider backend={HTML5Backend}>
+        <TagInput
+          tags={importantSkills}
+          handleAddition={tag => setImportantSkills([...importantSkills, tag])}
+          handleDelete={index => setImportantSkills(importantSkills.filter((_, i) => i !== index))}
+          placeholder="Enter important skills..."
+        />
+      </DndProvider>
 
       <h1>Step 2: Upload Resumes</h1>
       <input type="file" onChange={handleFileChange} />
