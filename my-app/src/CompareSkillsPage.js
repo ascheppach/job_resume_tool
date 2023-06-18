@@ -52,24 +52,28 @@ const CompareSkillsPage = () => {
 
   const handleSearchClick = () => {
     const formData = new FormData();
+
+    // Append the skillList and importantSkills to the formData
+    formData.append('skillList', JSON.stringify(skillList));
+    formData.append('importantSkills', JSON.stringify(importantSkills));
+
+    // Append the file contents to the formData
     selectedFiles.forEach((file, index) => {
       formData.append(`file${index}`, file);
     });
-    formData.append('skillList', JSON.stringify(skillList));
 
-    axios.post('http://127.0.0.1:5000/skillList', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    axios
+      .post('http://127.0.0.1:5000/searchApplicants', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
       .then(response => {
-        console.log('Skill added successfully');
-        setSkillList(prevSkillList => [...prevSkillList, skillList]);
-        setSkill('');
-        setSkills([]);
+        console.log('Applicants searched successfully');
+        // Do something with the response if needed
       })
       .catch(error => {
-        console.error('Error adding skill:', error);
+        console.error('Error searching applicants:', error);
       });
   };
 
