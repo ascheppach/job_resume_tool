@@ -38,7 +38,7 @@ const CompareSkillsPage = () => {
   const handleSkillSubmit = event => {
     event.preventDefault();
     // Process the skill and corresponding skill catalogue here (e.g., make API calls, update state, etc.)
-    console.log('Skill:', skill);
+    console.log('Skillcluster:', skill);
     console.log('Corresponding skill catalogue:', skills);
     setSkillList(prevSkillList => [...prevSkillList, { skill, skills }]);
     setSkill('');
@@ -94,12 +94,12 @@ const CompareSkillsPage = () => {
       <form onSubmit={handleSkillSubmit}>
         <div>
           <label>
-            Skill:
+            Skillcluster:
             <input
               type="text"
               value={skill}
               onChange={handleSkillChange}
-              placeholder="Enter a skill..."
+              placeholder="Enter a Skillcluster..."
             />
           </label>
         </div>
@@ -131,7 +131,7 @@ const CompareSkillsPage = () => {
       <ul>
         {skillList.map((item, index) => (
           <li key={index}>
-            Skill: {item.skill}, Corresponding Skill Catalogue: {item.skills.join(', ')}
+            Skillcluster: {item.skill}, Corresponding Skill Catalogue: {item.skills.join(', ')}
           </li>
         ))}
       </ul>
