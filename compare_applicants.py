@@ -6,6 +6,7 @@ from langchain.llms import OpenAI
 from langchain.document_loaders import TextLoader, PyPDFLoader, DirectoryLoader
 from langchain.chains.question_answering import load_qa_chain
 
+api_key = "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"
 
 def ask_openAI(question):
     response = openai.Completion.create(
@@ -51,11 +52,11 @@ def get_skill_match(applicant, job):
         else:
             resume_chunks = text_splitter.split_text(resume[idx].page_content)
 
-    embeddings = OpenAIEmbeddings(openai_api_key="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")
+    embeddings = OpenAIEmbeddings(openai_api_key=api_key)
     knowledge_base = FAISS.from_texts(resume_chunks, embeddings)
     question = f"What are the candidate's technical Corresponding skill catalogue? Please return the answer in a concise manner, no more than 350 words. If not found, return 'Not provided'"
     docs = knowledge_base.similarity_search(question)
-    llm = OpenAI(openai_api_key="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", temperature=0.0, model_name="text-davinci-003", max_tokens="2000")
+    llm = OpenAI(openai_api_key=api_key, temperature=0.0, model_name="text-davinci-003", max_tokens="2000")
     chain = load_qa_chain(llm, chain_type="stuff")
     resume_summary = chain.run(input_documents=docs, question=question)
 
@@ -86,9 +87,9 @@ def get_workExperience_and_Degree(applicant):
         else:
             resume_chunks = text_splitter.split_text(resume[idx].page_content)
 
-    embeddings = OpenAIEmbeddings(openai_api_key="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")
+    embeddings = OpenAIEmbeddings(openai_api_key=api_key)
     knowledge_base = FAISS.from_texts(resume_chunks, embeddings)
-    llm = OpenAI(openai_api_key="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", temperature=0.0,
+    llm = OpenAI(openai_api_key=api_key, temperature=0.0,
                  model_name="text-davinci-003", max_tokens="2000")
     chain = load_qa_chain(llm, chain_type="stuff")
 
@@ -106,10 +107,10 @@ def get_workExperience_and_Degree(applicant):
 
 
 applicant = 'CV_Scheppach.pdf'
-def get_applicantName(applicant):
+def get_applicantName(text):
 
-    loader = PyPDFLoader(f"C:/Users/SEPA/lanchain_ir2/Resume_data_pdf/{applicant}")
-    resume = loader.load()
+    #loader = PyPDFLoader(f"C:/Users/SEPA/lanchain_ir2/Resume_data_pdf/{applicant}")
+    #resume = loader.load()
 
     text_splitter = CharacterTextSplitter(
         separator="\n",
@@ -118,16 +119,18 @@ def get_applicantName(applicant):
         length_function=len
     )
 
-    for idx in range(len(resume)):
+    #for idx in range(len(resume)):
         # idx=0
-        if idx > 0:
-            resume_chunks += text_splitter.split_text(resume[idx].page_content)
-        else:
-            resume_chunks = text_splitter.split_text(resume[idx].page_content)
+    #    if idx > 0:
+    #        resume_chunks += text_splitter.split_text(resume[idx].page_content)
+    #    else:
+    #        resume_chunks = text_splitter.split_text(resume[idx].page_content)
 
-    embeddings = OpenAIEmbeddings(openai_api_key="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")
+    resume_chunks = text_splitter.split_text(text)
+
+    embeddings = OpenAIEmbeddings(openai_api_key=api_key)
     knowledge_base = FAISS.from_texts(resume_chunks, embeddings)
-    llm = OpenAI(openai_api_key="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", temperature=0.0,
+    llm = OpenAI(openai_api_key=api_key, temperature=0.0,
                  model_name="text-davinci-003", max_tokens="2000")
     chain = load_qa_chain(llm, chain_type="stuff")
 
@@ -159,7 +162,7 @@ def create_and_store_job_summaries(job_directory):
         job = documents[idx].page_content
         job_chunks = text_splitter.split_text(job)
 
-        embeddings = OpenAIEmbeddings(openai_api_key="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")
+        embeddings = OpenAIEmbeddings(openai_api_key=api_key)
         knowledge_base = FAISS.from_texts(job_chunks, embeddings)
 
         question_job = f"What are the Corresponding skill catalogue and profile needed for this job? Please return the answer in a concise manner, no more than 250 words. If not found, return 'Not provided'"
@@ -198,7 +201,7 @@ def create_and_store_resume_summaries(resume_directory):
         resume = documents[idx].page_content
         resume_chunks = text_splitter.split_text(resume)
 
-        embeddings = OpenAIEmbeddings(openai_api_key="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")
+        embeddings = OpenAIEmbeddings(openai_api_key=api_key)
         knowledge_base = FAISS.from_texts(resume_chunks, embeddings)
 
         # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl", model_kwargs={"device": "cpu"})

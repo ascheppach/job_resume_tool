@@ -75,6 +75,24 @@ const CompareSkillsPage = () => {
       .catch(error => {
         console.error('Error searching applicants:', error);
       });
+
+    fetch('/get_skillcluster_image')
+    .then(response => {
+      if (response.ok) {
+        return response.blob();
+      } else {
+        throw new Error('Error: ' + response.status);
+      }
+    })
+    .then(blob => {
+      const imageUrl = URL.createObjectURL(blob);
+      // Use the imageUrl as the source for displaying the image in your React component
+      // console.log('Image URL:', imageUrl);
+      setImageUrl(imageUrl);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   };
 
   return (
@@ -148,6 +166,7 @@ const CompareSkillsPage = () => {
           Search for applicants
         </button>
       </div>
+      {imageUrl && <img src={imageUrl} alt="Skill Cluster" />}
     </div>
   );
 };
