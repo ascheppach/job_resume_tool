@@ -12,79 +12,79 @@ const CompareSkillsPage = () => {
   const [skillList, setSkillList] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [importantSkills, setImportantSkills] = useState([]);
+  const [imageUrl, setImageUrl] = useState('');
 
-  const handleSkillChange = event => {
+  const handleSkillChange = (event) => {
     setSkill(event.target.value);
   };
 
-  const handleSkillsChange = event => {
+  const handleSkillsChange = (event) => {
     setCurrentSkill(event.target.value);
   };
 
-  const handleSkillsKeyDown = event => {
+  const handleSkillsKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
       if (currentSkill.trim() !== '') {
-        setSkills(prevSkills => [...prevSkills, currentSkill]);
+        setSkills((prevSkills) => [...prevSkills, currentSkill]);
         setCurrentSkill('');
       }
     }
   };
 
-  const handleTagDelete = index => {
-    setSkills(prevSkills => prevSkills.filter((_, i) => i !== index));
+  const handleTagDelete = (index) => {
+    setSkills((prevSkills) => prevSkills.filter((_, i) => i !== index));
   };
 
-  const handleSkillSubmit = event => {
+  const handleSkillSubmit = (event) => {
     event.preventDefault();
-    // Process the skill and corresponding skill catalogue here (e.g., make API calls, update state, etc.)
     console.log('Skillcluster:', skill);
     console.log('Corresponding skill catalogue:', skills);
-    setSkillList(prevSkillList => [...prevSkillList, { skill, skills }]);
+    setSkillList((prevSkillList) => [...prevSkillList, { skill, skills }]);
     setSkill('');
     setSkills([]);
   };
 
-  const handleFileChange = event => {
+  const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     setSelectedFiles(files);
   };
 
-  const handleSearchClick = () => {
-    const formData = new FormData();
+  const handleSearchClick = async () => {
+      const formData = new FormData();
+      formData.append('skillList', JSON.stringify(skillList));
+      formData.append('importantSkills', JSON.stringify(importantSkills));
 
-    // Append the skillList and importantSkills to the formData
-    formData.append('skillList', JSON.stringify(skillList));
-    formData.append('importantSkills', JSON.stringify(importantSkills));
-
-    // Append the file contents to the formData
-    selectedFiles.forEach((file, index) => {
-      formData.append(`file${index}`, file);
-    });
-
-    axios
-      .post('http://127.0.0.1:5000/searchApplicants', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then(response => {
-        console.log('Applicants searched successfully');
-        // Do something with the response if needed
-      })
-      .catch(error => {
-        console.error('Error searching applicants:', error);
+      selectedFiles.forEach((file, index) => {
+        formData.append(`file${index}`, file);
       });
 
-    fetch('/get_skillcluster_image')
-    .then(response => {
-      if (response.ok) {
-        return response.blob();
-      } else {
-        throw new Error('Error: ' + response.status);
-      }
-    })
-    .then(blob => {
+      try {
+        axios
+        .post('http://127.0.0.1:5000/searchApplicants', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          console.log('Applicants searched successfully');
+          // Do something with the response if needed
+        })
+        .catch(error => {
+          console.error('Error searching applicants:', error);
+        });
+
+        await wait(20000);
+        // Wait for a specific duration using a utility function
+        fetch('/get_skillcluster_image')
+        .then(response => {
+            if (response.ok) {
+                return response.blob();
+            } else {
+                throw new Error('Error: ' + response.status);
+            }
+        })
+      .then(blob => {
       const imageUrl = URL.createObjectURL(blob);
       // Use the imageUrl as the source for displaying the image in your React component
       // console.log('Image URL:', imageUrl);
@@ -93,7 +93,16 @@ const CompareSkillsPage = () => {
     .catch(error => {
       console.error('Error:', error);
     });
-  };
+      } catch (error) {
+        console.error('Error searching applicants:', error);
+      }
+    };
+
+    const wait = (duration) => {
+      return new Promise((resolve) => {
+        setTimeout(resolve, duration);
+      });
+    };
 
   return (
     <div>
@@ -102,8 +111,10 @@ const CompareSkillsPage = () => {
       <DndProvider backend={HTML5Backend}>
         <TagInput
           tags={importantSkills}
-          handleAddition={tag => setImportantSkills([...importantSkills, tag])}
-          handleDelete={index => setImportantSkills(importantSkills.filter((_, i) => i !== index))}
+          handleAddition={(tag) => setImportantSkills([...importantSkills, tag])}
+          handleDelete={(index) =>
+            setImportantSkills(importantSkills.filter((_, i) => i !== index))
+          }
           placeholder="Enter important skills..."
         />
       </DndProvider>

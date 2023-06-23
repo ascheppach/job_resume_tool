@@ -228,7 +228,7 @@ def sort_applicants(data, skills):
 
     # need skillcolumns + all the other columns
     for i, skill in enumerate(skills):
-        # print(skill['text'])
+        print(skill['text'].replace(" ", ""))
         skills[i] = skill['text'].replace(" ", "")
 
     sorted_columns = skills + [col for col in data.columns if col not in skills]
