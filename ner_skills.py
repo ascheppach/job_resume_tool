@@ -51,7 +51,7 @@ db.to_disk("./training_data_skills.spacy")  # save the docbin object
 nlp_ner = spacy.load("C:/Users/SEPA/topic_modeling/model-best")
 
 doc = nlp_ner('''I have several years of experience with NLP and MLOps. Here I implemented a Text Classification Algorithm with BERT Algorithm. Moreover I have worked with AWS, Kubernetes and Docker.''')
-spacy.displacy.render(doc, style="ent", jupyter=True)
+#spacy.displacy.render(doc, style="ent", jupyter=True)
 extracted_skills = []
 for ent in doc.ents:
     extracted_skills.append(ent.text)
@@ -70,12 +70,21 @@ def read_pdf(file_path):
 
         return text
 
-pdf_file_path = 'C:/Users/SEPA/topic_modeling/Tech_data/Resume_data_pdf/CV_Scheppach.pdf'
+pdf_file_path = 'C:/Users/SEPA/lanchain_ir2/CV_Scheppach_text.txt'
 pdf_text = read_pdf(pdf_file_path)
 
-pdf_text = nlp_ner(pdf_text)
+file_path = 'C:/Users/SEPA/lanchain_ir2/CV_Scheppach_text.txt'
+
+# Open the file in 'read' mode
+with open(file_path, 'r') as file:
+    # Read the entire content of the file
+    content = file.read()
+    # Do something with the content
+    print(content)
+
+doc = nlp_ner(content)
 
 extracted_skills_cv = []
-for ent in pdf_text.ents:
+for ent in doc.ents:
     extracted_skills_cv.append(ent.text)
 
