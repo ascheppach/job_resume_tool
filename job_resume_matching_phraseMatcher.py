@@ -76,7 +76,7 @@ def compare_resumes_to_job(resumes_path, keyword_path):
         for i in range(len(keyword_list)): # über jedes subject iterieren i=0
             matcher.add(keyword_dict.columns[i], None, *keyword_list[i]) # 'Deep Learning', None, [neural network, pytorch, tensorflow, deep learning]
 
-        doc = nlp(text) # der text aber halt Object Doc()
+        doc = nlp(text)
 
         d = []
         matches = matcher(doc) # [(17857678330435779591, 48, 50), (16378066519788692076, 56, 57) ....]
