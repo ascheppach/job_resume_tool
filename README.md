@@ -8,6 +8,7 @@ That's why I started this side project exploring the potential of Machine Learni
 An exemplary insight into this project is provided by a module for competence screening or competence clustering of CVs, which is currently still in progress and is being developed as a proof of concept, but which immediately demonstrates the potential of vector embedding, especially with the help of large language models.
 
 This feature enables recruiters, HR employees or Managers to analyze applicants regarding some predefines skillclusters and skills which are relevant for open job vaccancies. The recruiter can define skillcluster for which he want to search for and gets visualizations that gives a fast understanding of the skills and strength of an applicant. The user has also the option to sort the applicants according to specific skillclusters.
+Currently this Feature was already created a React Flask application and interface , the  Recat is used as Frontend and Flask  as the backend and forntend and backend communicate via API's with each other. 
 
 
 
