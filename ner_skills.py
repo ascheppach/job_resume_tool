@@ -75,12 +75,8 @@ pdf_text = read_pdf(pdf_file_path)
 
 file_path = 'C:/Users/SEPA/lanchain_ir2/CV_Scheppach_text.txt'
 
-# Open the file in 'read' mode
 with open(file_path, 'r') as file:
-    # Read the entire content of the file
     content = file.read()
-    # Do something with the content
-    print(content)
 
 doc = nlp_ner(content)
 
