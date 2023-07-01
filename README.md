@@ -12,7 +12,7 @@ Currently this Feature was already created a React Flask application and interfa
 
 job_resume_tool/output_skillcluster.JPG
 
-![Alt Text](job_resume_tool/output_skillcluster.JPG)
+![Alt Text](output_skillcluster.JPG)
 
 
 The chart shows how strongly the applicants' skills (in percentages) match the skill clusters. As you can immediately see from the chart, the first applicant has a strong background in MLOps, while the second applicant has more experience with Data Engineering. This allows for quick screening of skill sets and their match with various projects and job openings.
