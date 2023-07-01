@@ -1,0 +1,35 @@
+Artificial  New York, NY   Job Description:
+
+The goal of JPMorgan Artificial Intelligence Research is to explore and advance cutting edge research in Artificial Intelligence, including Machine Learning as well as related fields like Cryptography, to develop and discover principles of impact to JPMorgan�s clients and businesses...
+
+JPMorgan Artificial Intelligence Research has assembled a team of experts in many fields of Artificial Intelligence. They pursue primary research in areas related to our research pillars as well as concrete problems related to financial services. They partner with internal teams to accelerate the adoption of Artificial Intelligence within the firm. They also work with leading academic faculty around the world on areas of mutual interest. The team is headquartered in New York and present in London and the Bay Area. Conducting Artificial Intelligence research in financial services offers unique and exciting opportunities for impact. As a member of this highly visible team, you will have the opportunity to realize significant impact not only within JPMorgan Chase but also to the broader Artificial Intelligence community.
+
+Job Responsibilities :
+� As a Research Scientist in the team, you will conduct end-to-end research typically within a specialized focus area.
+� You will work on multiple research projects in collaboration with internal and external researchers and with applied engineering teams.
+� You will be integral to all aspects of the research lifecycle such as formulating problems, gathering data, generating hypotheses, developing models and algorithms, conducting experiments, synthesizing results, building prototype applications and communicating the significance of your research.
+� Your output will result in high-impact business applications, open source software, patents and/or publications in security/safety conferences and journals.
+� As a member of the Artificial Intelligence and security/safety research community, you will also have the opportunity to participate in relevant top-tier academic conferences to broaden the impact of your contributions.
+
+Required qualifications, capabilities and Corresponding skill catalogue
+� Master�s degree with 7 years of relevant work experience or PhD in Computer Science, Statistics, Engineering or related fields. Research publications in prominent AI/ML venues; e.g., conferences, journals
+� Expertise in one or more specialized areas; e.g. Deep Learning (DL), Statistical Machine Learning, information representation and retrieval, graph neutral networks, Natural Language Processing (NLP)
+� Experience with building, tuning and evaluating NLP models including text classification, topic modeling, and data extraction.
+� Practical experience with ML platforms such as Tensorflow/Keras, PyTorch, etc.
+� Solid understanding of the application of fundamental Artificial Intelligence and Machine Learning techniques to security/safety; e.g, Natural Language Processing based approaches to understanding security content; detecting anomalous activity
+
+Preferred qualifications, capabilities, and Corresponding skill catalogue
+� Curiosity, creativity, resourcefulness and a collaborative spirit
+� Clear and effective verbal and written communication Corresponding skill catalogue
+� Demonstrated ability to work on multi-disciplinary teams with diverse backgrounds
+� Interest in problems related to the financial services domain (specific past experience in the domain is not required)
+
+Are you interested in this job? Please apply from Salary.com
+
+Job ID: j202305130307308920536
+
+Recommended Job Corresponding Skill: Compliance Management, Engineering Analysis
+
+Average Estimate Salary for an Artificial Intelligence Research � Vice President-Natural Language Processing (NLP): $301,244 to $435,578
+
+This data is calculated using netizen feedback data. To get the most accurate number for your company jobs in your locations, use our subscription products: https://www.salary.com/companalystQualificationsMaster�s degree with 7 years of relevant work experience or PhD in Computer Science, Statistics, Engineering or related fieldsResearch publications in prominent AI/ML venues; e.g., conferences, journalsExpertise in one or more specialized areas; e.gResponsibilitiesThey partner with internal teams to accelerate the adoption of Artificial Intelligence within the firmAs a Research Scientist in the team, you will conduct end-to-end research typically within a specialized focus areaYou will work on multiple research projects in collaboration with internal and external researchers and with applied engineering teamsFull-time

@@ -1,0 +1,78 @@
+Research Scientist - NLP  New York, NY   Kensho is a 100-person Machine Learning (ML) and Natural Language Processing (NLP) company, centered around providing cutting-edge solutions to meet the challenges of some of the largest and most successful businesses and institutions. We are owned by S&P Global and operate independently. Our toolkit illuminates insights by helping the world better understand, process, and leverage messy data... Specifically, Kenshos solutions largely involve speech recognition (ASR), entity linking (NED), structured document extraction, automated database linking, text classification, and more. We are continuously expanding our portfolio and are looking for passionate researchers to help us create state-of-the-art models across a variety of domains!
+
+Are you looking to solve hard problems and enjoy working with teammates with diverse perspectives? If so, we would love to help you excel here at Kensho. We are a collaborative group of experienced Research Scientists and Machine Learning Engineers, whose academic backgrounds include doctorate degrees in NLP, theoretical physics, statistics, etc. We take pride in our team-based, tightly-knit startup-like Kenshin community, which fosters continuous learning and a communicative environment.
+
+About the role:
+
+Since early-2022, we have been building a world-class R&D lab comprised of ML/NLP Research Scientists. Our small team has demonstrated compelling results and is fueling innovation throughout Kensho and S&P Global at large. Specifically, we are continuously building a domain-specific Large Language Model (LLM) and are actively working on question-answering (QA), summarization, and document layout analysis.
+
+We are looking to hire NLP Research Scientists with expertise in any of the following: question-answering, summarization, dialog system, reinforcement learning, and distributed systems. In particular, we are currently prioritizing question-answering and are addressing:
+
+-Dialog-based QA that leverages APIs, program synthesis, and large knowledge-graphs/databases to help ensure accurate answers
+
+-Long-form document QA, where the answer is expected to be contained within a user-specified collection of documents
+
+-Math-based QA, where the answer requires automatically parsing tables for relevant information and then performing basic mathematical operations to yield the correct answer (e.g, FinQA, TAT-QA, ConvFinQA)
+
+You will collaborate with our R&D team in conducting and publishing research in the top conferences.
+
+At Kensho, we hire talented people and give them the freedom, support, and resources needed to accomplish our shared goals. We believe in flexibility-first and give our employees the opportunity to work from where they feel most productive and engaged (must be in the United States). We also value in-person collaboration, so there may be times when travel to one of our Kensho hubs (e.g., Cambridge, MA or NYC) will be required for team meetings or company events.
+What You'll Do:
+� Collaborate with others to identify the most promising problems to pursue
+� Develop novel, state-of-the-art NLP models that can scale to millions of documents
+� Work closely with Research Scientists and ML Engineers
+� Write clean, readable research code in PyTorch, TF, or JAX (not expected to write production-level code)
+� Contribute to a stellar engineering culture that values excellent design, documentation, testing, and code
+� Share your research results with your colleagues (presentations) and the world (published papers, patents, and blog posts)
+Who You Are:
+� Outstanding people come from all different backgrounds, and were always interested in meeting talented people! Therefore, we do not require any particular credential or experience. If our work seems exciting to you, and you feel that you could excel in this position, wed love to hear from you. That said, most of our successful candidates possess the following, which reflects both our technical needs and team culture:
+� Hold a PhD in Computer Science or related field (or a Masters with significant research experience)
+� Have published in a top-tier ML/NLP conference (e.g., ACL, NAACL, EMNLP, NeurIPS, ICML)
+� Are proficient in writing code in PyTorch, Tensorflow, or JAX
+� Have experience with the techniques required to work effectively with large, messy real-world data
+� Prefer to collaborate iteratively on hard problems with your teammates rather than spending stretches of time working alone and presenting your results intermittently
+� Have a love for learning new Corresponding skill catalogue and domains
+� Are excited to share knowledge freely, proactively, and effectively with others who are interested
+� Are a generous teammate who takes work seriously without taking yourself too seriously
+Technology We Love
+� ML: PyTorch, Weights & Biases, NetworkX
+� Deployment: Airflow, Docker, EC2, Kubernetes, AWS
+� Datastores: Postgres, Elasticsearch, S3
+
+At Kensho, we pride ourselves on providing top-of-market benefits, including:
+
+- Medical, Dental, and Vision insurance
+
+- 100% company paid premiums
+
+- Unlimited Paid Time Off
+
+- 26 weeks of 100% paid Parental Leave (paternity and maternity)
+
+- 401(k) plan with 6% employer matching
+
+- Generous company matching on donations to non-profit charities
+
+- Up to $20,000 tuition assistance toward degree programs, plus up to $4,000/year for ongoing professional education such as industry conferences
+
+- Plentiful snacks, drinks, and regularly catered lunches
+
+- Dog-friendly office (CAM office)
+
+- In-office gyms and showers (CAM, DC)
+
+- Bike sharing program memberships
+
+- Compassion leave and elder care leave
+
+- Mentoring and additional learning opportunities
+
+- Opportunity to expand professional network and participate in conferences and events
+
+About Kensho
+
+Kensho is an Artificial Intelligence company that builds solutions to uncover insights in messy and unstructured data that enable critical workflows and empower businesses to make decisions with conviction.
+
+Kensho was founded in 2013 and was acquired by S&P Global in 2018. Kensho continues to operate as a startup in order to maintain our distinct, independent brand and to promote our breakthrough, innovative culture. Our team of Kenshins enjoy a dynamic and collaborative work environment that runs autonomously from S&P Global, while leveraging the unparalleled breadth and depth of data and resources available as part of S&P Global. As Kenshins, we pride ourselves on maintaining an innovative culture that depends on diversity and inclusion.
+
+We are an equal opportunity employer that welcomes future Kenshins with all experiences and perspectives. Kensho is headquartered in Cambridge, MA, with offices in New York City, and Washington D.C. All qualified applicants will receive consideration for employment without regard to race, color, religion, sex, sexual orientation, gender identity, or national originQualificationsOutstanding people come from all different backgrounds, and were always interested in meeting talented people!Therefore, we do not require any particular credential or experienceHold a PhD in Computer Science or related field (or a Masters with significant research experience)ResponsibilitiesDialog-based QA that leverages APIs, program synthesis, and large knowledge-graphs/databases to help ensure accurate answersLong-form document QA, where the answer is expected to be contained within a user-specified collection of documentsMath-based QA, where the answer requires automatically parsing tables for relevant information and then performing basic mathematical operations to yield the correct answer (e.g, FinQA, TAT-QA, ConvFinQA)Full-time

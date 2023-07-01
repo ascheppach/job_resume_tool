@@ -1,0 +1,74 @@
+Resume 1:
+
+Name: Jennifer Mitchell
+Location: San Francisco, CA
+
+Project 1: Fraud Detection System
+Description: Developed a machine learning-based fraud detection system for a financial institution. Utilized techniques such as anomaly detection, feature engineering, and ensemble learning algorithms. Implemented the solution using Python and scikit-learn. Deployed the model as a REST API using Flask and Docker.
+
+Tech Stack: Python, scikit-learn, Flask, Docker
+
+Project 2: Recommender System
+Description: Built a recommender system for an e-commerce platform to personalize product recommendations for users. Utilized collaborative filtering, matrix factorization, and deep learning techniques. Implemented the solution using Python, TensorFlow, and Keras. Deployed the model using Amazon SageMaker.
+
+Tech Stack: Python, TensorFlow, Keras, Amazon SageMaker
+
+Resume 2:
+
+Name: Michael Reynolds
+Location: New York, NY
+
+Project 1: Natural Language Processing (NLP) Pipeline
+Description: Developed an end-to-end NLP pipeline for text classification tasks. Implemented techniques such as text preprocessing, feature extraction, and model training using machine learning algorithms. Utilized Python, NLTK, and scikit-learn for implementation. Developed a web application using Flask for user interaction.
+
+Tech Stack: Python, NLTK, scikit-learn, Flask
+
+Project 2: Image Recognition for Object Detection
+Description: Built an object detection system for identifying objects in images. Utilized deep learning architectures like Faster R-CNN and YOLO. Implemented the solution using Python, TensorFlow, and OpenCV. Utilized transfer learning with pre-trained models to improve performance.
+
+Tech Stack: Python, TensorFlow, OpenCV
+
+Resume 3:
+
+Name: Amanda Hernandez
+Location: Seattle, WA
+
+Project 1: Time Series Forecasting
+Description: Developed a time series forecasting model for predicting stock market prices. Utilized techniques such as ARIMA, LSTM, and Prophet. Implemented the solution using Python, TensorFlow, and Facebook Prophet. Developed a web dashboard using Dash for visualizing the forecasted results.
+
+Tech Stack: Python, TensorFlow, Prophet, Dash
+
+Project 2: Image Segmentation
+Description: Built an image segmentation system for medical imaging analysis. Utilized deep learning models like U-Net and Mask R-CNN. Implemented the solution using Python, TensorFlow, and Keras. Applied transfer learning with pre-trained models for accurate segmentation.
+
+Tech Stack: Python, TensorFlow, Keras
+
+Resume 4:
+
+Name: Jonathan Thompson
+Location: Austin, TX
+
+Project 1: Recommendation Engine
+Description: Developed a recommendation engine for a streaming platform to personalize content recommendations for users. Utilized collaborative filtering, matrix factorization, and content-based filtering techniques. Implemented the solution using Python, Spark, and Apache Spark's MLlib. Utilized Amazon EMR for distributed processing.
+
+Tech Stack: Python, Spark, Apache Spark MLlib, Amazon EMR
+
+Project 2: Image Classification with Transfer Learning
+Description: Built an image classification system using transfer learning and deep convolutional neural networks (CNNs). Utilized pre-trained models such as VGG16 and ResNet50. Implemented the solution using Python, TensorFlow, and Keras. Deployed the model as a REST API using Flask.
+
+Tech Stack: Python, TensorFlow, Keras, Flask
+
+Resume 5:
+
+Name: Olivia Wilson
+Location: Boston, MA
+
+Project 1: Customer Churn Prediction
+Description: Developed a machine learning model for predicting customer churn in a telecommunications company. Utilized techniques such as feature engineering, logistic regression, and random forest. Implemented the solution using Python and scikit-learn. Developed a web-based dashboard using Plotly for visualizing the predictions.
+
+Tech Stack: Python, scikit-learn, Plotly
+
+Project 2: Speech Emotion Recognition
+Description: Built a system for recognizing emotions from speech signals. Utilized techniques such as feature extraction, speech processing, and deep learning architectures like CNN and LSTM. Implemented the solution using Python, TensorFlow, and Librosa. Developed a command-line interface for real-time emotion recognition.
+
+Tech Stack: Python, TensorFlow, Librosa

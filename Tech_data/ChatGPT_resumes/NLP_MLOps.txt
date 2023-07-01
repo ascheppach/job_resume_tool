@@ -1,0 +1,49 @@
+Resume 1:
+
+Name: Samantha Johnson
+Location: San Francisco, CA
+
+Project: Sentiment Analysis for Social Media
+Description: Developed a sentiment analysis system to analyze social media data and extract sentiment insights. Utilized NLP techniques, such as tokenization, word embedding, and recurrent neural networks (RNNs). Implemented MLOps practices for model versioning using Git, automated testing using Jenkins, and deployment using Docker and Kubernetes.
+
+Tech Stack: Python, TensorFlow, Keras, Git, Jenkins, Docker, Kubernetes
+
+Resume 2:
+
+Name: Alexander Lee
+Location: New York, NY
+
+Project: Named Entity Recognition for Legal Documents
+Description: Built a named entity recognition (NER) system to extract entities from legal documents. Employed techniques like word segmentation, sequence labeling, and conditional random fields (CRFs). Implemented MLOps workflows for continuous integration using GitLab CI/CD, model deployment using AWS Lambda, and monitoring using ELK Stack.
+
+Tech Stack: Python, spaCy, scikit-learn, CRFsuite, GitLab CI/CD, AWS Lambda, ELK Stack (Elasticsearch, Logstash, Kibana)
+
+Resume 3:
+
+Name: Emily Chen
+Location: Seattle, WA
+
+Project: Chatbot Development for Customer Support
+Description: Developed an intelligent chatbot to handle customer support queries using natural language understanding and generation. Employed techniques like intent recognition, dialogue management, and response generation. Utilized MLOps practices for model deployment using AWS SageMaker, continuous integration using Jenkins, and monitoring using Prometheus and Grafana.
+
+Tech Stack: Python, TensorFlow, Rasa, AWS SageMaker, Jenkins, Prometheus, Grafana
+
+Resume 4:
+
+Name: Benjamin Ramirez
+Location: Austin, TX
+
+Project: Machine Translation for Multilingual Customer Support
+Description: Built a machine translation system to provide multilingual support for customer queries. Utilized neural machine translation (NMT) models and attention mechanisms. Implemented MLOps practices for model training using TensorFlow Extended (TFX), model serving using TensorFlow Serving, and monitoring using Grafana and Kibana.
+
+Tech Stack: Python, TensorFlow, TensorFlow Extended (TFX), TensorFlow Serving, Grafana, Kibana
+
+Resume 5:
+
+Name: Olivia Thompson
+Location: Chicago, IL
+
+Project: Document Classification for Content Management
+Description: Developed a document classification system to automatically categorize and tag documents for efficient content management. Employed techniques like text preprocessing, feature extraction, and supervised learning algorithms. Implemented MLOps workflows for model version control using Git, model deployment using Flask, and monitoring using ELK Stack.
+
+Tech Stack: Python, scikit-learn, NLTK, Git, Flask, ELK Stack (Elasticsearch, Logstash, Kibana)

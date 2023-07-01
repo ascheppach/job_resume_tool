@@ -1,0 +1,33 @@
+Step out of your comfort zone, excel and redefine the limits of what is possible. That�s just what our employees are doing every single day � in order to set the pace through our innovations and enable outstanding achievements. After all, behind every successful company are many great fascinating people.
+
+In a spacious modern setting full of opportunities for further development, ZEISS employees work in a place where expert knowledge and team spirit reign supreme. All of this is supported by a special ownership structure and the long-term goal of the Carl Zeiss Foundation: to bring science and society into the future together.
+
+Join us today. Inspire people tomorrow.
+
+Diversity is a part of ZEISS. We look forward to receiving your application regardless of gender, nationality, ethnic and social origin, religion, philosophy of life, disability, age, sexual orientation or identity.
+
+Apply now! It takes less than 10 minutes.
+
+Role
+
+You will play a crucial role in shaping the future of Data & Analytics and actively contribute to the success of the digital transformation at ZEISS. Within the Enterprise Data Management Team of our rapidly growing Data & Analytics organisation, you will help our business units to design, build, and maintain knowledge-based systems, driven by the�vision to enable everyone to effectively find, learn, share, & innovate throughout the enterprise. Your direct role and responsabilities include:
+� Develop and apply algorithms based on Natural Language Processing, Machine Learning (LLMs like GPT/ChatGPT), & Knowledge Graphs to extract, process & analyze information from unstructured documents
+� Work in a team with data scientists, data & knowledge engineers, software developers, and product owners to create scalable, reusable and performant data-oriented applications, incl. e.g., document understanding, chatbots, recommender, search
+� Convey technically difficult concepts in a clear and understandable way, translate business needs to technical specifications, and provide guidance for applying natural language processing & machine learning to other teams
+� Evaluate the latest methods and technologies and support the design of our data & analytics platforms and implement text classification algorithms
+� Continuously improve quality and performance while owning applications from idea to operations
+� Design and deploy highly scalable and available cloud infrastructure using Kubernetes, Docker, and AWS.
+� Work with software developers to integrate their applications into the cloud environment.
+
+
+Your profile
+� An excellent university degree (MSc/PhD) in information technology, computer science, natural sciences, or similar training
+� Expert understanding of Natural Language Processing, Machine Learning / Deep Learning as applied to Natural Language (e.g., LLMs)
+� Excellent programming Corresponding skill catalogue in Python, including mastering the standard libraries for NLP, machine learning and data science; knowledge of one other programming language (e.g. Java, Javascript) is a plus
+� Experience in any of search (e.g., based on Elasticsearch, MongoDB), semantic technologies (e.g., Graph Databases), chatbots (e.g., RASA) is considered a plus - An independent (�can-do�), solution-oriented and team-oriented way of working, not afraid to take on responsibility
+� Strong desire to learn & upskill at the intersection of data, science & industry Experience with the following is welcome and considered as a plus:
+� Cloud technologies like Microsoft Azure (e.g., Synapse, Databricks, Azure DevOps) - Big Data (e.g., Spark) - CI/CD using e.g., git, docker
+� Agile software-development using Scrum / Kanban
+� Bachelor's degree in Computer Science or a related field.
+� 1+ years of experience in cloud infrastructure engineering, including experience with Kubernetes, Docker, and AWS.
+� Strong scripting Corresponding skill catalogue in Python, Bash, or another language.

@@ -1,0 +1,28 @@
+NLP Scientist (gn)
+Standort
+Ottobrunn bei München / Berlin / Hamburg
+
+Beschreibung der Stelle
+The Innovation Center (IZ) observes trends in technology and society and serves as an incubator and accelerator for the explorative development of modern business models for the entire IABG Group. The Innovation Center sees itself as the spearhead for industrializing the latest research and putting it to beneficial use for customers. We experiment not only with technologies and methods but also with organizational forms and business models. We are guided by the question of how an increasingly globalized and urban society can be developed in a secure and sustainable manner, whose organizations and systems are already networked at Internet speed.
+
+Likewise, we are seeking a skilled Natural Language Processing (NLP) expert to join our dynamic team. As an NLP specialist, you will be responsible for developing and implementing advanced algorithms to analyze and process large amounts of natural language data. You will work with cutting-edge technology and collaborate with talented colleagues to help drive innovation in the field of NLP.
+
+You can expect an exciting and challenging job with a lot of responsibility in a dynamic and innovative environment.
+
+Tätigkeit
+• Designing and implementing NLP algorithms and models to analyze large datasets as part of our OSInt activities
+• Evaluating the performance of NLP models and making recommendations for improvement and their safe usage (wrt. model confidence, uncertainty, interpretability)
+• Conducting research to stay up-to-date on the latest NLP techniques and technologies
+• Collaborating with other team members to develop and refine project requirements
+• Communicating complex technical information to both technical and non-technical stakeholders
+
+Voraussetzungen
+• A degree in Computer Science, Computational Linguistics, Mathematics, or related field, with a minimum of 3 years of NLP experience
+• Strong programming Corresponding skill catalogue in Python, and experience with DL frameworks such as PyTorch and TensorFlow
+• Familiarity with NLP libraries like Hugging Face, NLTK or spaCy and experience with post-training deployment and fine-tuning of large language models
+• Strong problem-solving and analytical Corresponding skill catalogue, with an independent and structured way of working
+• Familiarity with agile process models is an advantage
+• Excellent knowledge of English and German
+
+Ziele
+The goal of this position is to develop and maintain state-of-the-art NLP algorithms and models that can be deployed on-premise and at scale to solve complex business problems. You will play a critical role in helping our team deliver high-quality solutions that meet the needs of our clients

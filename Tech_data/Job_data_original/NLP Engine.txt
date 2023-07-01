@@ -1,0 +1,27 @@
+NLP Engine Anywhere Are you an NLP engineer with a passion for biomedicine? Are you frustrated by the sclerotic structures and misaligned incentives of the industry? Do you have a track record of using machine learning to solve complex problems in the field of biomedicine? If so, come work with us at Weave. Weave is building a generative AI platform that will revolutionize how life science companies collaborate.
+
+We... are seeking a talented NLP engineer to join our team and help us push the boundaries of what is possible with machine learning in the field of biomedicine. As an NLP engineer, you will be responsible for designing, implementing, and evaluating state-of-the-art NLP models and solutions that address real-world challenges in the biomedical domain. You will work closely with our team of researchers and developers to build and deploy NLP systems that extract valuable insights from biomedical data, including electronic health records, scientific literature, and clinical notes.
+
+To be successful in this role, you should be familiar to biomedical terminology, and a deep understanding of NLP techniques and machine learning algorithms. You should also have experience working with large datasets and be superb at coding in Python.
+
+If you are a highly motivated and talented NLP engineer with a passion for biomedicine, please reach out – we’d love to work together.
+
+Requirements:
+• Absolutely necessary to be curious and in constantly learning mode
+• Proven experience as an NLP Engineer or similar role
+• Understanding of NLP techniques for text representation, semantic extraction techniques, data structures and modeling
+• Ability to effectively design software architecture
+• Deep understanding of text representation techniques, statistics and classification algorithms
+• Ability to write robust and testable Python code
+• Experience with machine learning frameworks (like Keras or PyTorch) and libraries (like scikit-learn)
+• Degree in Computer Science, Mathematics, Computational Linguistics or similar field
+
+Responsibilities:
+• Build NLP pipelines using semantic vector representations
+• Fine-tune a large language model on large biomedical texts
+• Find and implement the right algorithms and tools for NLP tasks
+• Create benchmarking data for various NLP tasks
+• Train, evaluate, and deploy NLP models with REST API
+• Perform statistical analysis of results and refine models
+• Contribute to and extend Weave’s code base
+• Remain updated in the rapidly changing field of machine learningQualificationsTo be successful in this role, you should be familiar to biomedical terminology, and a deep understanding of NLP techniques and machine learning algorithmsYou should also have experience working with large datasets and be superb at coding in PythonAbsolutely necessary to be curious and in constantly learning modeResponsibilitiesAs an NLP engineer, you will be responsible for designing, implementing, and evaluating state-of-the-art NLP models and solutions that address real-world challenges in the biomedical domainYou will work closely with our team of researchers and developers to build and deploy NLP systems that extract valuable insights from biomedical data, including electronic health records, scientific literature, and clinical notesBuild NLP pipelines using semantic vector representationsFull-time

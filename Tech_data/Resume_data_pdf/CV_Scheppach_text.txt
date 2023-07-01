@@ -1,0 +1,46 @@
+Curriculum Vitae
+Personal details
+Name Amadeu Manfred Scheppach
+Address Schleifweg 10A, 86405 Meitingen
+Contact scheppachamadeu@yahoo.com
+Mobile +49179 4320800
+Education 04/2020-01/2022 Master Statistics (LMU) - ⌀ 1.68 (GPA 3.3)
+ᐨ Focus on Machine Learning, Deep Learning and AutoML
+ᐨ Projects with Python, R, and Matlab
+Work Experience
+Since 04/2022 Junior Data Scientist, Cognizant Mobility
+ᐨ Here I am working in three different positions/teams, namely data science, software development and operations.
+Data Science
+ᐨ Working on an NLP project where we are developing an MLOps pipeline for ticket
+classification
+ᐨ Using different NLP algorithms and also a variety of AWS services, such as Lambda, Sagemaker, EC2, S3, ECR, as well as Step Functions
+ᐨ Install, build and run docker containers with AWS
+Software Development
+ᐨ Working on the BMW eSIM backend system
+ᐨ Solving defects as well as implementing new features with Java
+ᐨ Further skills: Kubernetes, Cloud (AWS), CI/CD, DevOps, Git Workflows
+Operations
+ᐨ Solving incidents by using SQL, PL/pgSQL, as well as AWS Services
+05/2021-11/2021 Master student, Helmholtz-Zentrum für Infektionsforschung - Grade 1.3 (GPA 3.7)
+ᐨ Implemented new algorithms (based on popular NAS methods for image classification and NLP) in the field of bioinformatics to find the optimal Deep Learning architecture in an automated way (using Python and PyTorch)
+ᐨ Built novel NAS methods (OSP-NAS, CWP-DARTS, DEP-DARTS)
+ᐨ We aim to publish part of the work at the upcoming AutoML conference 
+12/2018-06/2020 Working student Data Analytics, Interhyp AG
+ᐨ Built predictive models to identify error-sources in the tracking system (using R)
+ᐨ Customer Journey Analysis (using Tableau)
+Further programming skills & projects
+04/2021-08/2021 Applied Deep Learning with TensorFlow and PyTorch - Grade 1.0 (GPA 4.0)
+ᐨ Implemented the SCINet architecture, based on the paper „Time Series is a Special Sequence: Forecasting with Sample Convolution and Interaction“ (using Python and PyTorch)
+08/2020 Hackathon Fraunhofer Institute
+ᐨ Pattern recognition for sensor data (time series clustering)
+ᐨ Implemented Non-parametric Hidden Semi-Markov Models (with physmm library in Python)
+05/2020-08/2020 Reinforcement Learning - Grade 1.3 (GPA 3.7)
+ᐨ Implemented the Deep Reinforcement Learning algorithm PPO (using Python and OpenAI environment)
+12/2019-05/2020 Bayesian Optimization for Material Science - Grade 1.3 (GPA 3.7)
+ᐨ Built the package „EBO“, designed for material science (using R)
+ᐨ Enables chemists and researches a better understanding of their optimization and simulation: tune the hyperparameters of optimization algorithms and understand the effect of its hyperparameters with contour plots and ablation analysis
+Skills and Interests
+Programming Python, Java, R, Tableau, Matlab
+Further skills Cloud (AWS), MLOps, SQL, Deep Learning, PyTorch, Linux, NAS, AutoML, CI/CD, DevOps
+Languages German (native), English (fluent) , Portuguese (fluent), French (intermediate)
+Interests Machine Learning, Chess, Surfing, Skiing

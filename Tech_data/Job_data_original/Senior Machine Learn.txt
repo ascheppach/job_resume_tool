@@ -1,0 +1,41 @@
+Senior Machine Learn  New York, NY   Job Description
+
+About us...
+
+Here at Wonders, we build products that empower small brick-and-mortar restaurants by liberating them from the operational burden of running their business. We accomplish this by providing a frictionless connection between them and their customers through our platform. In turn, it empowers them to focus on creating a better customer experience while helping their business thrive.
+
+We obsess over placing our customers first and working backward from there. When our customers succeed, we succeed!
+
+To learn more about our culture, and values, and how you can be a part of helping mom & pop restaurants thrive, please visit us here!
+
+What we're looking for:
+
+In our next phase of growth, we are looking for a Machine Learning Engineer to join our Voice Platform team! The Voice Platform team enables restaurants to handle customer phone calls no matter how many customers are calling in simultaneously. This allows these mom-and-pop businesses to scale past their staffing limit and fulfill their customer's orders on time, every time!
+
+What You'll Accomplish:
+• You will innovate and experiment with machine learning and algorithm design, working in a green-field project.
+• You will perform both research experimentation and engineering implementation.
+• You will develop and implement machine learning models for NLP tasks such as text classification, sentiment analysis, entity recognition, and topic modeling.
+• You will craft datasets and build the data pipelines for training and fine-tuning models.
+• You will partner with product and other engineers to advance the product vision and roadmap.
+• You will actively collaborate with other leaders to source and recruit the best talent for Wonders.
+• You will in the first 90 days set up the necessary infrastructure to evaluate NLP/ASR techniques
+
+About You:
+• You have 5+ years of experience in applying machine learning in production systems.
+• You have an excellent grasp of machine learning fundamentals with experience in either ASR or NLP
+• You have the ability to find creative solutions for complex and ambiguous problems.
+• You have a keen sense of ownership and enjoy working on user-facing products.
+• You have the ability to work with little guidance.
+
+Bonus Points:
+• You have experience in a consumer-driven industry with a passion for the customer.
+• You have achieved a BS/ MS/ or PhD in Computer Science or a related field.
+• You have experience building products in a 0-1 environment.
+• You have a roll-up-your-sleeves mentality with current or prior experience working in a fast-paced, collaborative, highly ambiguous environment frequently wearing more than one hat.
+
+If you do not meet all the requirements listed above which candidates rarely do, don't worry. We still encourage you to apply!
+
+Wonders is committed to hiring the best team to empower small businesses to thrive. We believe that a diverse workforce is paramount to our success. We welcome talent from all backgrounds - including but not limited to - race, sexual orientation, gender identity, age, nationality, religion, veteran status, political affiliation, and disability.
+
+SDL2017QualificationsYou have 5+ years of experience in applying machine learning in production systemsYou have an excellent grasp of machine learning fundamentals with experience in either ASR or NLPYou have the ability to find creative solutions for complex and ambiguous problemsResponsibilitiesIn turn, it empowers them to focus on creating a better customer experience while helping their business thriveYou will innovate and experiment with machine learning and algorithm design, working in a green-field projectYou will perform both research experimentation and engineering implementationFull-time

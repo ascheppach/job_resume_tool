@@ -1,0 +1,28 @@
+Senior NLP Research   New York, NY   The AI Group is the central engineering group responsible for driving Machine Learning (ML) adoption at Bloomberg, with over 200 researchers and engineers working together to provide clients with the best-in-class news, research, market data, and analytics using innovative machine learning technology. We directly impact a wide variety of our flagship products, including news, research, pricing... communications platforms, search and discovery tools. We work on a variety of ML fields, including natural language processing, information retrieval, time series analysis, and recommender systems.
+
+Some projects where we are looking for experienced research engineers include: unified search, question answering, query parsing, financial instrument (e.g., fixed income) pricing, dialogue understanding. Our research engineers are responsible for architecting and implementing models end-to-end, overcoming unique challenges that come with machine learning systems in the financial domain. In addition, we contribute to open source; contributions we have made and work with include Solr, Koan, KFServing, Cloud Native Buildpacks and PyTorch Lightning that directly impact our production services.
+
+Textual data is key to understanding how events in the world impact our clients. As the amount of unstructured data has increased, natural language processing has become a key tool for Bloomberg to deliver analytics faster, more accurately, and at a larger scale than ever before. Whether it's analyzing the social media sentiment of companies over thousands of tweets per second, automatically extracting key indicators from press releases and filings before the rest of the market, or helping our clients derive intelligence from their internal communications by identifying entities and intents, NLP has enabled Bloomberg to maintain its edge as the market leader in financial data and communications.
+
+We'll trust you to:
+Collaborate with colleagues on production systems and applications
+Design, experiment, and evaluate algorithms as well as models
+Write, test, and maintain production-quality code
+Represent Bloomberg at scientific and industry conferences
+Publish research findings in leading academic venues
+You'll need to have:
+Masters or a Ph.D. in CS, ML, Math, Statistics, Physics, Engineering, Quant, or related fields.
+Relevant work experience (5+ years after Masters or 2+ years after Ph.D.)
+Proficiency in software development
+If this sounds like you:
+Apply if you think we're a good match! We'll get in touch with you to let you kno w what the next steps are. In the meantime, check us out at ()
+
+Bloomberg is an equal opportunity employer and we value diversity at our company. We do not discriminate on the basis of age, ancestry, color, gender identity or expression, genetic predisposition or carrier status, marital status, national or ethnic origin, race, religion or belief, sex, sexual orientation, sexual and other reproductive health decisions, parental or caring status, physical or mental disability, pregnancy or maternity/parental leave, protected veteran status, status as a victim of domestic violence, or any other classification protected by applicable law.
+
+Bloomberg is a disability inclusive employer. Please let us know if you require any reasonable adjustments to be made for the recruitment process. If you would prefer to discuss this confidentially, please email .
+
+Salary Range: 165,000 - 260,000 USD Annually + Benefits + Bonus
+
+The referenced salary range is based on the Company's good faith belief at the time of posting. Actual compensation may vary based on factors such as geographic location, work experience, market conditions, education/training and skill level.
+
+We offer one of the most comprehensive and generous benefits plans available and offer a range of total rewards that may include merit increases, incentive compensation Exempt roles only , paid holidays, paid time off, medical, dental, vision, short and long term disability benefits, 401(k) +match, life insurance, and various wellness programs, among others. The Company does not provide benefits directly to contingent workers/contractors and internsQualificationsMasters or a Ph.D. in CS, ML, Math, Statistics, Physics, Engineering, Quant, or related fieldsRelevant work experience (5+ years after Masters or 2+ years after Ph.D.)Proficiency in software developmentResponsibilitiesCollaborate with colleagues on production systems and applicationsDesign, experiment, and evaluate algorithms as well as modelsWrite, test, and maintain production-quality codeFull-time
