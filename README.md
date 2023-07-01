@@ -34,7 +34,8 @@ https://github.com/ascheppach/job_resume_tool/blob/main/Named%20Entity%20Recogni
 
 
 # 4. Topic Modeling
-
+Utilizing topic modeling on a vast collection of textual data, including Jira stories, open jobs, resumes, and technical reports, provides valuable insights into emerging technical trends and identifies skill gaps and areas of expertise within an organization.
+We will use the popular LDA algorithm, which is a probabilistic model that represents documents as a mixture of topics and which is a powerful technique used to uncover topics within a collection of documents. It assumes that each document is a combination of multiple topics, and each topic is a distribution of words. By analyzing a large collection of documents, LDA automatically discovers the underlying topics and their word distributions. This enables to uncover hidden thematic structures in text data and to detect specific skills and keywords belonging to a skill cluster.
 
 # 5. Future Work:
 Integrate all provided features within my React-Flask Application to provide an interface that is easy to use (for manager, HR employees, recruiter etc.), provides queries and visualizations "per request", and enables quick insight into the relevant skill profiles of employees, projects, and applicants.
