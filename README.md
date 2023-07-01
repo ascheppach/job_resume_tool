@@ -30,6 +30,11 @@ Following jupyter notebook shows a proof-of-concept of this feature: https://git
 # 3. NER:
 In this notebook I will show a proof-of-conecept how to train an Named Entity Recognition (NER) algorithm in order to be able to extract all relevant skills from an employee or applicant in a fully automated way. In the next step I want to use these automatically detected skills for the creation of employee and project competence profiles.
 
+https://github.com/ascheppach/job_resume_tool/blob/main/Named%20Entity%20Recognition.ipynb
+
+[Named Entity Recognition](Named Entity Recognition.ipynb)
+
+
 
 # 4. Topic Modeling
 
