@@ -23,7 +23,7 @@ import os
 folder_path = 'C:/Users/SEPA/topic_modeling/Tech_data/ChatGPT_jira_stories'  # Replace with the path to your folder
 file_list = []
 
-# Iterate over each file in the folder
+# Iterate over each file in the folder and append its content
 for filename in os.listdir(folder_path):
     # print(filename)
     if filename.endswith('.txt'):
@@ -34,13 +34,18 @@ for filename in os.listdir(folder_path):
             content = file.read()
             file_list.append(content)
 
+# create own examples for each Jira story (each new Title)
 all_files = []
 for file in file_list:
     all_files += file.split('Title')
 
+# build a data frame with this
+# consists of 494 examples
 df = pd.DataFrame(all_files)
 df = df.rename(columns={0: 'skill_description'})
 df = df[df['skill_description'] != '']
+
+print(len(df))
 
 for index, row in df.iterrows():
     # print(df.iloc[index,0])
@@ -48,13 +53,8 @@ for index, row in df.iterrows():
     row['skill_description'] = row['skill_description'].replace("Description:", "")
 
 clean_df = clean_all(df, 'skill_description')
-clean_df.head()
-
-
-# punctuation noch entfernen
-# /n und /n/n noch entfernen
-# Description noch entfernen
-
+print(clean_df.iloc[0][0])
+#all_files[1]
 
 # bigram_scores
 bigram_measures = nltk.collocations.BigramAssocMeasures()
@@ -114,7 +114,7 @@ filtered_trigram = trigram_pmi[trigram_pmi.apply(lambda trigram: \
 bigrams = [' '.join(x) for x in filtered_bigram.bigram.values if len(x[0]) > 2 or len(x[1]) > 2]
 trigrams = [' '.join(x) for x in filtered_trigram.trigram.values if len(x[0]) > 2 or len(x[1]) > 2 and len(x[2]) > 2]
 # examples of bigrams
-bigrams[:10]
+print(bigrams[:10])
 
 # Concatenate n-grams
 def replace_ngram(x):
@@ -123,6 +123,7 @@ def replace_ngram(x):
     for gram in bigrams:
         x = x.replace(gram, '_'.join(gram.split()))
     return x
+
 reviews_w_ngrams = clean_df.copy()
 reviews_w_ngrams.skill_description = reviews_w_ngrams.skill_description.map(lambda x: replace_ngram(x))
 # tokenize reviews + remove stop words + remove names + remove words with less than 2 characters
@@ -130,7 +131,6 @@ reviews_w_ngrams = reviews_w_ngrams.skill_description.map(lambda x: [word for wo
                                                  if word not in stop_word_list\
                                                               and word not in english_names\
                                                               and len(word) > 2])
-reviews_w_ngrams.head()
 
 
 ############################################# Filter for only nouns ####################################################
@@ -142,8 +142,6 @@ def noun_only(x):
     return filtered
 final_reviews = reviews_w_ngrams.map(noun_only)
 
-# final_reviews.iloc[0]
-# df[0]
 
 ########################################## LDA Model ###################################################################
 # get unique words or tokens present in the text corpus
@@ -154,9 +152,10 @@ dictionary = corpora.Dictionary(final_reviews)
 doc_term_matrix = [dictionary.doc2bow(doc) for doc in final_reviews]
 
 
-
+# To decide the number of topics we will maximize the coherence.
+# For this we will iterate over 5 up to 25 topics and calculate for each model the coherence
 coherence = []
-for k in range(5, 25): # iteriere über 5-25 anzahl topics und berechne für jeden die coherence
+for k in range(5, 25):
     print('Round: ' + str(k))
     Lda = gensim.models.ldamodel.LdaModel
     ldamodel = Lda(doc_term_matrix, num_topics=k, id2word=dictionary, passes=40, \
@@ -178,6 +177,8 @@ plt.ylabel('Coherence')
 plt.xticks(x_val)
 plt.show()
 
+# As we have seen that the 6 topic have a high coherence and we want to keep things simple we will choose to train a LDA
+# model with 6 topics.
 
 # er geht 40 mal über gesamten/alle chunks. uns für jedes dokument macht er 200iterations
 # Passes: The number of times model iterates through the whole corpus
@@ -185,18 +186,10 @@ plt.show()
 Lda = gensim.models.ldamodel.LdaModel
 ldamodel = Lda(doc_term_matrix, num_topics=6, id2word = dictionary, passes=40,\
                iterations=200,  chunksize = 100, eval_every = None, random_state=0)
-
-Lda2 = gensim.models.ldamodel.LdaModel
-ldamodel2 = Lda2(doc_term_matrix, num_topics=20, id2word = dictionary, passes=40,\
-               iterations=200,  chunksize = 100, eval_every = None, random_state=0)
-
-
-ldamodel.show_topics(6, num_words=10, formatted=False)
-# ldamodel2.show_topics(20, num_words=10, formatted=False)
-
+# ldamodel.show_topics(6, num_words=10, formatted=False)
 
 # visualization with pyLDAvis
-topic_data = pyLDAvis.gensim.prepare(ldamodel, doc_term_matrix, dictionary, mds = 'pcoa', num_terms=6)
+topic_data = pyLDAvis.gensim.prepare(ldamodel, doc_term_matrix, dictionary, mds = 'pcoa')#,num_terms=6)
 # pyLDAvis.display(topic_data)
 pyLDAvis.save_html(topic_data, 'topic_visualization.html')
 
