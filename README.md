@@ -10,9 +10,13 @@ An exemplary insight into this project is provided by a module for competence sc
 This feature enables recruiters, HR employees or Managers to analyze applicants regarding some predefines skillclusters and skills which are relevant for open job vaccancies. The recruiter can define skillclusters for which he want to search for and gets visualizations that gives a fast understanding of the skills and strength of an applicant. The user has also the option to sort the applicants according to specific skillclusters.
 Currently this Feature was already created a React Flask application and interface , the  Recat is used as Frontend and Flask as the backend and forntend and backend communicate via API's with each other. 
 
-job_resume_tool/output_skillcluster.JPG
+
+![Selected skillclusters](defined_skillclusters.JPG)
 
 ![Alt Text](output_skillcluster.JPG)
+
+
+![Alt Text](skill_plot.JPG)
 
 
 The chart shows how strongly the applicants' skills (in percentages) match the skill clusters. As you can immediately see from the chart, the first applicant has a strong background in MLOps, while the second applicant has more experience with Data Engineering. This allows for quick screening of skill sets and their match with various projects and job openings.
