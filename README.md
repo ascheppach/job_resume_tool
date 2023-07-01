@@ -28,4 +28,18 @@ Language embeddings are representations of words, phrases, or documents in a hig
 Following jupyter notebook shows a proof-of-concept of this feature: https://github.com/ascheppach/job_resume_tool/blob/main/Information%20Retrieval.ipynb
 
 # 3. NER:
-For the creation of employee and project competence profiles, we recommend the use of information extraction algorithms (e.g. Named Entity Recognition) using the spaCy library.
+In this notebook I will show a proof-of-conecept how to train an Named Entity Recognition (NER) algorithm in order to be able to extract all relevant skills from an employee or applicant in a fully automated way. In the next step I want to use these automatically detected skills for the creation of employee and project competence profiles.
+
+
+# 4. Topic Modeling
+
+
+# 5. Future Work:
+Integrate all provided features within my React-Flask Application to provide an interface that is easy to use (for manager, HR employees, recruiter etc.), provides queries and visualizations "per request", and enables quick insight into the relevant skill profiles of employees, projects, and applicants.
+
+
+
+
+
+
+
