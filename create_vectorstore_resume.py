@@ -29,8 +29,6 @@ def clean_text(pages, cleaning_functions):
     cleaned_pages = []
     for metadata, text in pages:
         for cleaning_function in cleaning_functions:
-            # text ist input und auch output, d.h. jede pdf seite wird durch diese 3 cleaning_functions gejagt.
-            # text = pages[22]
             text = cleaning_function(text)
         cleaned_pages.append((metadata, text))
     return cleaned_pages

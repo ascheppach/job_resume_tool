@@ -35,7 +35,7 @@ retriever = resume_vector_store.as_retriever(search_kwargs={"k": 3})
 # docs = retriever.get_relevant_documents("I have one year of experience with NLP and MLOps. Moreover I have worked with AWS, Kubernetes and Docker.")
 docs = retriever.get_relevant_documents(required_skills)
 
-docs_score = resume_vector_store.similarity_search_with_score(query= required_skills, distance_metric="cos", k = 3)
+docs_score = resume_vector_store.similarity_search_with_score(query = required_skills, distance_metric="cos", k = 3)
 
 applicant_values = []
 score_values = []

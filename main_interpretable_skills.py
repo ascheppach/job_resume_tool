@@ -7,9 +7,6 @@ import re
 import string
 import pandas as pd
 import numpy as np
-#nltk.download('stopwords')
-#from nltk.corpus import stopwords
-#stop_word_list = stopwords.words('english')
 
 from stop_word_list import *
 from cleanText import *
