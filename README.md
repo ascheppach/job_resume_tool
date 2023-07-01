@@ -32,7 +32,7 @@ In this notebook I will show a proof-of-conecept how to train an Named Entity Re
 
 https://github.com/ascheppach/job_resume_tool/blob/main/Named%20Entity%20Recognition.ipynb
 
-[Named](Named Entity Recognition.ipynb)
+![Named](Named Entity Recognition.ipynb)
 
 
 
