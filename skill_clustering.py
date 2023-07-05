@@ -4,14 +4,10 @@ import spacy
 import nltk
 import re
 import pandas as pd
-
-
 import os
 
 
 ################################################## Step 1: Get Skill data ##########################################
-
-
 # 1. Get the data
 
 folder_path = 'C:/Users/SEPA/lanchain_ir2/Tech_data/ChatGPT_jira_stories'  # Replace with the path to your folder
@@ -21,6 +17,8 @@ file_list = []
 for filename in os.listdir(folder_path):
     # print(filename)
     if filename.endswith('.txt'):
+    #if filename == 'cloud.txt' or filename == 'DataScience.txt':
+        # print(filename)
         file_path = os.path.join(folder_path, filename)
 
         # Open the file and read its contents
@@ -76,11 +74,11 @@ import gensim
 import matplotlib.pyplot as plt
 
 coherence = []
-for k in range(5, 25):
+for k in range(4, 12):
     print('Round: ' + str(k))
     Lda = gensim.models.ldamodel.LdaModel
-    ldamodel = Lda(doc_term_matrix, num_topics=k, id2word=dictionary, passes=40, \
-                   iterations=200, chunksize=100, eval_every=None)
+    ldamodel = Lda(doc_term_matrix, num_topics=k, id2word=dictionary, passes=300, \
+                   iterations=1200, chunksize=50, eval_every=None)
 
     cm = gensim.models.coherencemodel.CoherenceModel(model=ldamodel, texts=split_series, \
                                                      dictionary=dictionary, coherence='c_v')
@@ -98,8 +96,8 @@ plt.xticks(x_val)
 plt.show()
 
 Lda = gensim.models.ldamodel.LdaModel
-ldamodel = Lda(doc_term_matrix, num_topics=7, id2word = dictionary, passes=40,\
-               iterations=200, chunksize = 1000, eval_every = None, random_state=0)
+ldamodel = Lda(doc_term_matrix, num_topics=5, id2word = dictionary, passes=300,\
+               iterations=1200, chunksize = 50, eval_every = None, random_state=0)
 # ldamodel.show_topics(6, num_words=10, formatted=False)
 import pyLDAvis.gensim
 
@@ -116,7 +114,7 @@ df = pd.DataFrame(columns=topic_columns)
 # Iterate over documents and add topic distribution as rows
 i=0
 for doc in doc_term_matrix:
-    print(doc)
+    #print(doc)
     #i+=1
     #if i >1:
     #    break
@@ -124,45 +122,32 @@ for doc in doc_term_matrix:
     topic_probabilities = [prob for _, prob in topic_dist]
     df.loc[len(df)] = topic_probabilities
 
+topics_all = df
 
-split_series[0:5]
-
-
-
-
-
-topics_all = pd.DataFrame.from_dict(document_topic, orient='index')
-
-
-
-
+from scipy.cluster import hierarchy
+import matplotlib.pyplot as plt
+plt.figure()
+plt.title("Dendrograms")
+Z = hierarchy.linkage(topics_all, method='single')
+dend = hierarchy.dendrogram(Z)
+# plt.axhline(y=9, color='r', linestyle='--')
+plt.show()
 
 
 
+#############################################
+
+import matplotlib.pyplot as plt
+# Data for the pie chart
+labels = topics_all.columns # ['topic1', 'topic2', 'topic3', 'topic4']
+sizes = topics_all.iloc[0] # [30, 25, 20, 15]  # Represents the percentage of each slice
+plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+plt.title('Skill Distribution')
+plt.show()
 
 
-
-
-nlp = spacy.load('en_core_web_sm')
-# Skills data
-skills = ["AWS", "Kubernetes", "Azure", "Machine Learning", "Python", "Deep Learning", "AWS S3", "R"]
-
-# Generate word embeddings for each skill
-skill_embeddings = [nlp(skill).vector for skill in skills] # er hat 8 vectoren
-
-# Convert the embeddings to a numpy array
-X = np.array(skill_embeddings)
-
-# K-means clustering
-num_clusters = 2  # Set the number of clusters
-
-kmeans = KMeans(n_clusters=num_clusters, random_state=42)
-kmeans.fit(X)
-
-# Get the cluster assignments for each skill
-cluster_labels = kmeans.labels_
-
-# Print the skill clusters
-for i in range(num_clusters):
-    cluster_skills = [skills[j] for j in range(len(skills)) if cluster_labels[j] == i]
-    print(f"Cluster {i + 1}: {cluster_skills}")
+from sklearn.cluster import AgglomerativeClustering
+cluster_model = AgglomerativeClustering(n_clusters=4, metric='euclidean', linkage='ward')
+cluster = cluster_model.fit_predict(topics_all).tolist() # für jedes document gibt er cluster an
+# print(type(cluster))
+topics_all["cluster"] = cluster
