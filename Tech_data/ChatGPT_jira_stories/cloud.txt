@@ -357,3 +357,93 @@ Description: As a user, I want to utilize cloud-based video streaming services l
 
 Title: As a system administrator, I want to implement cloud-based security measures for data protection.
 Description: As a system administrator, I want to implement security measures like encryption, access controls, and threat monitoring using cloud-native security services like AWS Security Hub or Azure Security Center to protect sensitive data in the cloud.
+
+Title: Provision EC2 Instances for Auto Scaling
+Description: As a cloud engineer, I need to provision EC2 instances with the necessary configurations to support auto scaling, ensuring optimal resource allocation and high availability.
+
+Title: Configure VPC Peering for Cross-Region Connectivity
+Description: In order to establish secure and efficient communication between VPCs in different regions, I need to configure VPC peering, ensuring seamless connectivity and data transfer across regions.
+
+Title: Implement SSL/TLS Certificate Management for Load Balancers
+Description: As a cloud engineer, I need to implement SSL/TLS certificate management for load balancers to ensure secure communication between clients and backend services, enhancing data protection and user trust.
+
+Title: Set Up CloudWatch Alarms for Resource Monitoring
+Description: In order to proactively monitor the health and performance of our cloud resources, I need to set up CloudWatch alarms to trigger notifications and actions based on predefined thresholds and metrics.
+
+Title: Configure Route 53 DNS for Domain Name Management
+Description: As a cloud engineer, I need to configure Route 53 DNS to manage domain names, including domain registration, DNS resolution, and routing traffic to appropriate resources based on domain settings.
+
+Title: Optimize S3 Bucket Storage and Access Controls
+Description: In order to ensure efficient storage utilization and secure data access, I need to optimize S3 bucket configurations, including lifecycle policies, versioning, encryption, and access control settings.
+
+Title: Implement Network ACLs for Fine-Grained Security
+Description: As a cloud engineer, I need to implement network ACLs (Access Control Lists) to enforce granular network-level security rules, allowing or denying traffic based on source/destination IP, ports, and protocols.
+
+Title: Configure Multi-AZ RDS Database for High Availability
+Description: In order to achieve high availability and fault tolerance for our database systems, I need to configure multi-AZ (Availability Zone) deployment for RDS instances, ensuring automatic failover and data replication.
+
+Title: Implement VPC Flow Logs for Network Traffic Monitoring
+Description: As a cloud engineer, I need to implement VPC Flow Logs to capture and analyze network traffic patterns, enabling better network visibility, troubleshooting, and security monitoring.
+
+Title: Set Up CloudTrail for Audit Logging and Compliance
+Description: In order to meet compliance requirements and maintain an audit trail of API activity, I need to set up CloudTrail to capture and log API calls and related events in our cloud environment.
+
+Title: Deploy Serverless Functions with AWS Lambda
+Description: As a cloud engineer, I need to deploy serverless functions using AWS Lambda, enabling scalable and event-driven architectures, and reducing operational overhead for managing server infrastructure.
+
+Title: Configure Auto Scaling Policies for Elastic Beanstalk
+Description: In order to dynamically scale our applications based on demand, I need to configure auto scaling policies for Elastic Beanstalk, ensuring optimal resource allocation and cost efficiency.
+
+Title: Implement Cross-Region Data Replication with S3
+Description: As a cloud engineer, I need to implement cross-region data replication with S3, ensuring data redundancy and disaster recovery capabilities across multiple AWS regions.
+
+Title: Enable Cross-Account Access with IAM Roles
+Description: In order to securely grant access to resources across AWS accounts, I need to enable cross-account access using IAM roles, ensuring proper authentication and authorization mechanisms.
+
+Title: Configure Security Groups for Network Firewall Rules
+Description: As a cloud engineer, I need to configure security groups to define inbound and outbound network traffic rules, ensuring proper network segmentation and firewall protection for our resources.
+
+Title: Implement Data Encryption at Rest and in Transit
+Description: In order to protect sensitive data stored in our cloud environment, I need to implement encryption mechanisms, including encryption at rest (using AWS KMS) and encryption in transit (using SSL/TLS).
+
+Title: Set Up CloudFront CDN for Content Delivery
+Description: As a cloud engineer, I need to set up CloudFront CDN (Content Delivery Network) to cache and deliver static and dynamic content with low latency, improving overall user experience.
+
+Title: Configure VPC Endpoints for Secure Service Access
+Description: In order to securely access AWS services without traversing the public internet, I need to configure VPC endpoints, establishing private connections between VPCs and AWS services.
+
+Title: Implement Autoscaling Group Policies for EC2 Instances
+Description: As a cloud engineer, I need to define and implement autoscaling group policies for EC2 instances, allowing automatic scaling based on predefined conditions and performance metrics.
+
+Title: Set Up CloudFormation Templates for Infrastructure as Code
+Description: In order to automate the provisioning and management of cloud resources, I need to create and maintain CloudFormation templates, enabling infrastructure as code practices and consistent deployments.
+
+Title: Configure SNS Notifications for CloudWatch Alarms
+Description: As a cloud engineer, I need to configure SNS notifications to receive real-time alerts and notifications when CloudWatch alarms are triggered, ensuring timely response to critical events.
+
+Title: Implement DynamoDB Global Tables for Multi-Region Data Replication
+Description: In order to achieve global availability and low-latency access for our NoSQL database, I need to implement DynamoDB Global Tables, enabling automatic multi-region data replication.
+
+Title: Set Up IAM Policies for Fine-Grained Access Control
+Description: As a cloud engineer, I need to define and set up IAM policies to grant fine-grained permissions and access control to various resources and services, ensuring least privilege principles.
+
+Title: Implement AWS WAF for Web Application Firewall Protection
+Description: In order to protect our web applications from common web attacks, I need to implement AWS WAF (Web Application Firewall), applying security rules and filters to incoming HTTP/HTTPS traffic.
+
+Title: Configure CloudFront SSL/TLS Certificates for Custom Domains
+Description: As a cloud engineer, I need to configure SSL/TLS certificates for custom domains in CloudFront, enabling secure communication between clients and the CDN for content delivery.
+
+Title: Implement AWS Secrets Manager for Secure Secrets Storage
+Description: In order to securely store and manage sensitive information such as API keys and database credentials, I need to implement AWS Secrets Manager, ensuring encryption and fine-grained access control.
+
+Title: Set Up VPC VPN Connection for Secure Site-to-Site Connectivity
+Description: As a cloud engineer, I need to set up a VPC VPN (Virtual Private Network) connection to establish secure site-to-site connectivity between our on-premises network and the AWS VPC.
+
+Title: Configure CloudFront Geo-Restriction for Content Access Control
+Description: In order to restrict access to content based on geographical locations, I need to configure CloudFront Geo-Restriction, allowing or denying access to specific countries or regions.
+
+Title: Implement AWS Glue for Data ETL and Data Catalog Management
+Description: As a cloud engineer, I need to implement AWS Glue for data extraction, transformation, and loading (ETL) processes, as well as managing the data catalog for efficient data discovery and querying.
+
+Title: Set Up AWS Elastic Beanstalk for Deploying Applications
+Description: In order to easily deploy and manage our applications inan elastic and scalable manner, I need to set up AWS Elastic Beanstalk, providing a platform for effortless application deployment, versioning, and automatic environment management.

@@ -16,8 +16,8 @@ file_list = []
 # Iterate over each file in the folder and append its content
 for filename in os.listdir(folder_path):
     # print(filename)
-    if filename.endswith('.txt'):
-    #if filename == 'cloud.txt' or filename == 'DataScience.txt':
+    #if filename.endswith('.txt'):
+    if filename == 'cloud.txt' or filename == 'DataScience.txt':
         # print(filename)
         file_path = os.path.join(folder_path, filename)
 
@@ -51,10 +51,7 @@ for sample in all_files:
         extracted_entities_all.append(' '.join(extracted_skills))
     else:
         continue
-
-
 # extracted_entities_all[1]
-
 # build a data frame with this
 # consists of 494 examples
 df = pd.DataFrame(extracted_entities_all)
@@ -73,39 +70,18 @@ doc_term_matrix = [dictionary.doc2bow(doc) for doc in split_series]
 import gensim
 import matplotlib.pyplot as plt
 
-coherence = []
-for k in range(4, 12):
-    print('Round: ' + str(k))
-    Lda = gensim.models.ldamodel.LdaModel
-    ldamodel = Lda(doc_term_matrix, num_topics=k, id2word=dictionary, passes=300, \
-                   iterations=1200, chunksize=50, eval_every=None)
-
-    cm = gensim.models.coherencemodel.CoherenceModel(model=ldamodel, texts=split_series, \
-                                                     dictionary=dictionary, coherence='c_v')
-    coherence.append((k, cm.get_coherence()))
-
-# evaluiere coherence
-x_val = [x[0] for x in coherence]
-y_val = [x[1] for x in coherence]
-plt.plot(x_val,y_val)
-plt.scatter(x_val,y_val)
-plt.title('Number of Topics vs. Coherence')
-plt.xlabel('Number of Topics')
-plt.ylabel('Coherence')
-plt.xticks(x_val)
-plt.show()
-
 Lda = gensim.models.ldamodel.LdaModel
-ldamodel = Lda(doc_term_matrix, num_topics=5, id2word = dictionary, passes=300,\
-               iterations=1200, chunksize = 50, eval_every = None, random_state=0)
-# ldamodel.show_topics(6, num_words=10, formatted=False)
+ldamodel = Lda(doc_term_matrix, num_topics=2, id2word = dictionary, passes=100,\
+               iterations=300, chunksize = 50, eval_every = None, random_state=0)
 import pyLDAvis.gensim
-
 # visualization with pyLDAvis
 topic_data = pyLDAvis.gensim.prepare(ldamodel, doc_term_matrix, dictionary, mds = 'pcoa')#,num_terms=6)
 # pyLDAvis.display(topic_data)
 pyLDAvis.save_html(topic_data, 'topic_visualization.html')
 
+num_words = 10  # Number of most frequent words to retrieve per topic
+topics = ldamodel.show_topics(num_topics=2, num_words=num_words, formatted=False)
+# topic0 is NLP (plot 2); topic1 DL MLOps (plot 3) ; topic2 DL ML (plot 1)
 
 # Empty data frame with column names for topics
 topic_columns = [f'Topic {i}' for i in range(ldamodel.num_topics)]
@@ -114,15 +90,36 @@ df = pd.DataFrame(columns=topic_columns)
 # Iterate over documents and add topic distribution as rows
 i=0
 for doc in doc_term_matrix:
-    #print(doc)
-    #i+=1
-    #if i >1:
-    #    break
     topic_dist = ldamodel.get_document_topics(doc, minimum_probability=0)
     topic_probabilities = [prob for _, prob in topic_dist]
     df.loc[len(df)] = topic_probabilities
-
 topics_all = df
+
+# Data for the pie chart
+labels = ['DataScientist', 'Cloud']
+print(extracted_entities_all[0])# example document
+sizes = topics_all.iloc[0] # Represents the percentage of each slice
+plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+plt.title('Skill Distribution')
+plt.show()
+
+
+########################################################### Clustering ####################################################
+# Now, we will utilize the feature matrix derived from our LDA topic modeling algorithm to construct our clustering. There we
+# increase the number of topic to 5 to have more granular features available for our clustering.
+# This feature matrix effectively captures the co-occurrence of words and the document's contribution to each topic.
+Lda = gensim.models.ldamodel.LdaModel
+ldamodel = Lda(doc_term_matrix, num_topics=5, id2word = dictionary, passes=100,\
+               iterations=300, chunksize = 50, eval_every = None, random_state=0)
+topic_columns = [f'Topic {i}' for i in range(ldamodel.num_topics)]
+df = pd.DataFrame(columns=topic_columns)
+i=0
+for doc in doc_term_matrix:
+    topic_dist = ldamodel.get_document_topics(doc, minimum_probability=0)
+    topic_probabilities = [prob for _, prob in topic_dist]
+    df.loc[len(df)] = topic_probabilities
+topics_all = df
+
 
 from scipy.cluster import hierarchy
 import matplotlib.pyplot as plt
@@ -130,24 +127,16 @@ plt.figure()
 plt.title("Dendrograms")
 Z = hierarchy.linkage(topics_all, method='single')
 dend = hierarchy.dendrogram(Z)
-# plt.axhline(y=9, color='r', linestyle='--')
 plt.show()
 
+from scipy.cluster.hierarchy import cut_tree
+clusters = cut_tree(Z, n_clusters=range(1, 5)) # topics_all.shape[0]))
 
-
-#############################################
-
-import matplotlib.pyplot as plt
-# Data for the pie chart
-labels = topics_all.columns # ['topic1', 'topic2', 'topic3', 'topic4']
-sizes = topics_all.iloc[0] # [30, 25, 20, 15]  # Represents the percentage of each slice
-plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
-plt.title('Skill Distribution')
-plt.show()
-
-
-from sklearn.cluster import AgglomerativeClustering
-cluster_model = AgglomerativeClustering(n_clusters=4, metric='euclidean', linkage='ward')
-cluster = cluster_model.fit_predict(topics_all).tolist() # für jedes document gibt er cluster an
-# print(type(cluster))
-topics_all["cluster"] = cluster
+# first split (with 2 clusters)
+cluster_0, cluster_1 = [], []
+for i, cluster in enumerate(clusters[:,1]):
+    #print(i)
+    if cluster == 0:
+        cluster_0.append(extracted_entities_all[i])
+    else:
+        cluster_1.append(extracted_entities_all[i])
