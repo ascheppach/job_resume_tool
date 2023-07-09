@@ -42,7 +42,15 @@ https://github.com/ascheppach/job_resume_tool/blob/main/Topic%20Modeling.ipynb
 # 5. Skill Clustering
 Clustering algorithms such as k-means help to identify unique competency clusters and develop a competency tree. With this competence tree, specific competence areas can be explored in an intuitive way to understand trends and connections within the competence tree. Job descriptions, industry reports, resumes, and online job postings are particularly suitable as input data, as they provide insights into current market trends. The competency tree should be regularly updated and refined with new data to keep the competency tree current and reflect changes in industry trends.
 
+https://github.com/ascheppach/job_resume_tool/blob/main/Skill%20Clustering.ipynb
+
+![Alt Text](skill_tree.png)
+
+
 # 6. Knowledge Graph
+In our pursuit of understanding the intricate dynamics between applicants and job requirements, we delve into the construction of a knowledge graph. This powerful visual representation allows us to navigate the vast landscape of skills and competencies. At the core of our graph lie the main nodes representing applicants and job requirements, forming the foundation for a comprehensive understanding of their interplay. Skill nodes, intricately connected to both applicants and job requirements, provide us with valuable insights into the essential proficiencies sought in the industry. By unraveling the intricate web of connections within this knowledge graph, we aim to gain deeper insights into the alignment between applicants and job requirements, ultimately facilitating more informed decision-making processes.
+
+https://github.com/ascheppach/job_resume_tool/blob/main/Knowledge%20Graph.ipynb
 
 # 5. Future Work:
 Integrate all provided features within my React-Flask Application to provide an interface that is easy to use (for manager, HR employees, recruiter etc.), provides queries and visualizations "per request", and enables quick insight into the relevant skill profiles of employees, projects, and applicants.
