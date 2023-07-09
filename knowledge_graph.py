@@ -6,107 +6,107 @@ import re
 import pandas as pd
 import os
 
-
-################################################## Step 1: Get Skill data ##########################################
-# 1. Get the data
-
-folder_path = 'C:/Users/SEPA/lanchain_ir2/Tech_data/ChatGPT_jira_stories'  # Replace with the path to your folder
-file_list = []
-
-# Iterate over each file in the folder and append its content
-for filename in os.listdir(folder_path):
-    # print(filename)
-    if filename.endswith('.txt'):
-    #if filename == 'cloud.txt' or filename == 'DataScience.txt':
-        # print(filename)
-        file_path = os.path.join(folder_path, filename)
-
-        # Open the file and read its contents
-        with open(file_path, 'r') as file:
-            content = file.read()
-            file_list.append(content)
-
-# create own examples for each Jira story (each new Title)
-all_files = []
-for file in file_list:
-    sample_list = file.split('Title')
-    all_files += [sample.replace("\nDescription: ", ". ") for sample in sample_list]
-
-
-# 2. load our custom NER model
-
 nlp_ner = spacy.load("C:/Users/SEPA/lanchain_ir2/model-best")
 
-#test = all_files[1]
-#test = 'I have several years of experience with NLP and MLOps. Here I implemented a Text Classification Algorithm with BERT Algorithm. Moreover I have worked with AWS, Kubernetes and Docker.'
-extracted_entities_all = []
-for sample in all_files:
-    doc = nlp_ner(sample)
-    extracted_skills = []
-    for ent in doc.ents:
-        extracted_skills.append(ent.text)
-    if extracted_skills:
-        # Code to be executed if the list is not empty
-        extracted_skills = [element.replace(" ", "_").replace("-", "_") for element in extracted_skills] # build bigrams, trigramms automatically
-        extracted_entities_all.append(' '.join(extracted_skills))
-    else:
-        continue
+################################################## Step 1: Get Skill data ##########################################
+# 1. Define Job-skills
+
+job_skills = ['MLOps', 'AWS', 'NLP', 'ComputerVision', 'DeepReinforcementLearning']
 
 
-# extracted_entities_all[1]
+# 2. Get Resume-skills
+file_path = 'C:/Users/SEPA/lanchain_ir2/CV_Scheppach_text.txt'
 
-# build a data frame with this
-# consists of 494 examples
-df = pd.DataFrame(extracted_entities_all)
-df = df.rename(columns={0: 'skill_description'})
-df = df[df['skill_description'] != '']
+with open(file_path, 'r') as file:
+    content = file.read()
+
+doc = nlp_ner(content)
+
+extracted_skills_cv = []
+for ent in doc.ents:
+    extracted_skills_cv.append(ent.text)
+print(extracted_skills_cv)
+
+unique_extracted_skills_cv = list(set(extracted_skills_cv))
+skills_cv = pd.DataFrame(unique_extracted_skills_cv)
+skills_cv = skills_cv.rename(columns={0: 'skill_description'})
+skills_cv['Experience'] = np.random.randint(1, 6, size=len(skills_cv))
+# for the purpose of clarity I have only choosen 7 skills from my resume
+skills_cv = skills_cv.iloc[[1, 21, 23, 27, 36, 37, 65]]
+
 
 
 #################################### build knowledge graph ################################
+
+# pip install pyvis
+# als Beispiel nehme ich jetzt mal doc1-doc5 um ein example project oder job-description zu simulieren
+# und dann eben ncoh resume dazu machen
+from pyvis.network import Network
+
 job_net = Network(height='1000px', width='100%', bgcolor='#222222', font_color='white')
-
 job_net.barnes_hut()
-sources = data_graph['Job ID']
-targets = data_graph['skills']
-values=data_graph['years skills']
-sources_resume = data_graph_resume['document']
-targets_resume = data_graph_resume['skills']
+# create resume nodes
+job_net.add_node('Resume', 'Resume', color='#dd4b39', title='doc1')
+for skill in skills_cv.iterrows(): # iterate over each skill in order to create a node and connection to the resume node
+    experience = skill[1]['Experience']
+    skill = skill[1]['skill_description']
+    job_net.add_node(skill, skill, title=skill)
+    job_net.add_edge('Resume', skill, value=experience, color='#00ff1e', label='2')
 
-edge_data = zip(sources, targets, values )
-resume_edge=zip(sources_resume, targets_resume)
-for j,e in enumerate(edge_data):
-    src = e[0]
-    dst = e[1]
-    w = e[2]
+# add job nodes
+job_net.add_node('Job', 'Job', color='#dd4b39', title='doc1')
+for skill in job_skills: # iterate over each skill in order to create a node and connection to the resume node
+    job_net.add_node(skill, skill, title=skill)
+    job_net.add_edge('Job', skill, value=1, color='#00ff1e', label='2')
+
+job_net.show('job_graph.html', notebook=False)
 
 
-    job_net.add_node(src, src, color='#dd4b39', title=src)
-    job_net.add_node(dst, dst, title=dst)
+######### Using Networkx ##########
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# Create an empty graph
+graph = nx.Graph()
+
+# Add the main 'Resume' node
+graph.add_node('Resume', size=2000)
+
+# List of skills with corresponding years of experience
+skills = {'Python': 5, 'Java': 3, 'Machine Learning': 7, 'Data Analysis': 4}
 
 
-    if str(w).isdigit():
-        if w is None:
+# Add 'skill' nodes and edges connecting them to the 'Resume' node with weighted edges
+for skill in skills_cv.iterrows(): # iterate over each skill in order to create a node and connection to the resume node
+    experience = skill[1]['Experience']
+    skill = skill[1]['skill_description']
+    graph.add_node(skill)
+    graph.add_edge('Resume', skill, weight=experience)
 
-            job_net.add_edge(src, dst, value=w, color='#00ff1e', label=w)
-        if 1<w<=5:
-            job_net.add_edge(src, dst, value=w, color='#FFFF00', label=w)
-        if w>5:
-            job_net.add_edge(src, dst, value=w, color='#dd4b39', label=w)
 
-    else:
-        job_net.add_edge(src, dst, value=0.1, dashes=True)
-for j,e in enumerate(resume_edge):
-    src = 'resume'
-    dst = e[1]
+# Add the main 'Job_skills' node
+graph.add_node('Job_skills', size=2000)
 
-    job_net.add_node(src, src, color='#dd4b39', title=src)
-    job_net.add_node(dst, dst, title=dst)
-    job_net.add_edge(src, dst, color='#00ff1e')
-neighbor_map = job_net.get_adj_list()
-for node in job_net.nodes:
-    node['title'] += ' Neighbors:<br>' + '<br>'.join(neighbor_map[node['id']])
-    node['value'] = len(neighbor_map[node['id']])
-# add neighbor data to node hover data
-job_net.show_buttons(filter_=['physics'])
-job_net.show('job_knolwedge_graph.html')
+# List of skills for the 'Job_skills' node
+job_skills = ['MLOps', 'AWS', 'NLP', 'ComputerVision', 'DeepReinforcementLearning']
+
+# Add 'skill' nodes and edges connecting them to the 'Job_skills' node
+for skill in job_skills:
+    graph.add_node(skill)
+    graph.add_edge('Job_skills', skill, weight=1)
+
+weights = [graph.edges[edge]['weight'] for edge in graph.edges]
+node_sizes = [graph.nodes[node]['size'] if ((node == 'Resume') | (node =='Job_skills')) else 100 for node in graph.nodes]
+# Plot the graph
+plt.figure(figsize=(10, 8))
+pos = nx.spring_layout(graph)
+nx.draw_networkx(graph, pos, with_labels=True, node_color='lightblue', font_size=12, font_color='black',
+                 node_size=node_sizes,edge_color='grey', width=weights)
+edge_labels = {(u, v): graph.edges[u, v]['weight'] for u, v in graph.edges}
+nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels, font_color='red')
+
+plt.axis('off')
+plt.show()
+
+
 
