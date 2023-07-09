@@ -109,7 +109,7 @@ plt.show()
 # increase the number of topic to 5 to have more granular features available for our clustering.
 # This feature matrix effectively captures the co-occurrence of words and the document's contribution to each topic.
 Lda = gensim.models.ldamodel.LdaModel
-ldamodel = Lda(doc_term_matrix, num_topics=5, id2word = dictionary, passes=100,\
+ldamodel = Lda(doc_term_matrix, num_topics=4, id2word = dictionary, passes=100,\
                iterations=300, chunksize = 50, eval_every = None, random_state=0)
 topic_columns = [f'Topic {i}' for i in range(ldamodel.num_topics)]
 df = pd.DataFrame(columns=topic_columns)
@@ -129,8 +129,10 @@ Z = hierarchy.linkage(topics_all, method='single')
 dend = hierarchy.dendrogram(Z)
 plt.show()
 
+
+##################### get the most frequent words per leaf
 from scipy.cluster.hierarchy import cut_tree
-clusters = cut_tree(Z, n_clusters=range(1, 5)) # topics_all.shape[0]))
+clusters = cut_tree(Z, n_clusters=range(1, 6)) # topics_all.shape[0]))
 
 # first split (with 2 clusters)
 cluster_0, cluster_1 = [], []
@@ -140,3 +142,52 @@ for i, cluster in enumerate(clusters[:,1]):
         cluster_0.append(extracted_entities_all[i])
     else:
         cluster_1.append(extracted_entities_all[i])
+
+
+
+###################################
+labels = ['DataEngineering', 'Cloud', 'NLP','ComputerVision','DeepLearning','MLOps','IT']
+def augmented_dendrogram(*args, **kwargs):
+    ddata = dendrogram(*args, **kwargs)
+    if not kwargs.get('no_plot', False):
+        for ind,(i, d) in enumerate(zip(ddata['icoord'], ddata['dcoord'])):
+            # print(ind)
+            x = 0.5 * sum(i[1:3])
+            y = d[1]
+            plt.plot(x, y, 'ro')
+            plt.annotate(labels[ind], (x, y), xytext=(10,15),
+                         textcoords='offset points',
+                         va='top', ha='center')
+    return ddata
+
+
+from scipy.cluster.hierarchy import dendrogram, linkage
+
+Z2 = linkage(topics_all, 'ward')
+plt.figure(figsize=(10,10))
+augmented_dendrogram(
+    Z2,
+    truncate_mode='lastp',
+    p=8,
+    leaf_rotation=90.,
+    leaf_font_size=12.,
+    show_contracted=True,
+    #annotate_above=40,
+    #max_d=170,
+)
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
