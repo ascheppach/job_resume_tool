@@ -42,6 +42,11 @@ https://github.com/ascheppach/job_resume_tool/blob/main/Topic%20Modeling.ipynb
 # 5. Skill Clustering
 Clustering algorithms such as k-means help to identify unique competency clusters and develop a competency tree. With this competence tree, specific competence areas can be explored in an intuitive way to understand trends and connections within the competence tree. Job descriptions, industry reports, resumes, and online job postings are particularly suitable as input data, as they provide insights into current market trends. The competency tree should be regularly updated and refined with new data to keep the competency tree current and reflect changes in industry trends.
 
+https://github.com/ascheppach/job_resume_tool/blob/main/Skill%20Clustering.ipynb
+
+![Alt Text](skill_tree.JPG)
+
+
 # 6. Knowledge Graph
 
 # 5. Future Work:
