@@ -44,7 +44,7 @@ Clustering algorithms such as k-means help to identify unique competency cluster
 
 https://github.com/ascheppach/job_resume_tool/blob/main/Skill%20Clustering.ipynb
 
-![Alt Text](skill_tree.JPG)
+![Alt Text](skill_tree.png)
 
 
 # 6. Knowledge Graph
