@@ -57,7 +57,7 @@ https://github.com/ascheppach/job_resume_tool/blob/main/Knowledge%20Graph.ipynb
 
 ![Alt Text](knowledge_graph.png)
 
-# 5. Future Work:
+# 7. Future Work:
 Integrate all provided features within my React-Flask Application to provide an interface that is easy to use (for manager, HR employees, recruiter etc.), provides queries and visualizations "per request", and enables quick insight into the relevant skill profiles of employees, projects, and applicants.
 
 
