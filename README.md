@@ -27,7 +27,7 @@ Language embeddings are representations of words, phrases, or documents in a hig
 
 Following jupyter notebook shows a proof-of-concept of this feature: https://github.com/ascheppach/job_resume_tool/blob/main/Information%20Retrieval.ipynb
 
-# 3. NER:
+# 3. Information Extraction / Named Entity Recognition:
 In this notebook I will show a proof-of-conecept how to train an Named Entity Recognition (NER) algorithm in order to be able to extract all relevant skills from an employee or applicant in a fully automated way. In the next step I want to use these automatically detected skills for the creation of employee and project competence profiles.
 
 https://github.com/ascheppach/job_resume_tool/blob/main/Named%20Entity%20Recognition.ipynb
@@ -38,6 +38,11 @@ Utilizing topic modeling on a vast collection of textual data, including Jira st
 We will use the popular LDA algorithm, which is a probabilistic model that represents documents as a mixture of topics and which is a powerful technique used to uncover topics within a collection of documents. It assumes that each document is a combination of multiple topics, and each topic is a distribution of words. By analyzing a large collection of documents, LDA automatically discovers the underlying topics and their word distributions. This enables to uncover hidden thematic structures in text data and to detect specific skills and keywords belonging to a skill cluster.
 
 https://github.com/ascheppach/job_resume_tool/blob/main/Topic%20Modeling.ipynb
+
+# 5. Skill Clustering
+Clustering algorithms such as k-means help to identify unique competency clusters and develop a competency tree. With this competence tree, specific competence areas can be explored in an intuitive way to understand trends and connections within the competence tree. Job descriptions, industry reports, resumes, and online job postings are particularly suitable as input data, as they provide insights into current market trends. The competency tree should be regularly updated and refined with new data to keep the competency tree current and reflect changes in industry trends.
+
+# 6. Knowledge Graph
 
 # 5. Future Work:
 Integrate all provided features within my React-Flask Application to provide an interface that is easy to use (for manager, HR employees, recruiter etc.), provides queries and visualizations "per request", and enables quick insight into the relevant skill profiles of employees, projects, and applicants.
