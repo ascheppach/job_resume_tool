@@ -5,6 +5,9 @@ import nltk
 import re
 import pandas as pd
 import os
+from stop_word_list import *
+from cleanText import *
+from cleanText import clean_skills
 
 
 ################################################## Step 1: Get Skill data ##########################################
@@ -32,45 +35,9 @@ for file in file_list:
     sample_list = file.split('Title')
     all_files += [sample.replace("\nDescription: ", ". ") for sample in sample_list]
 
+####################################### Create bigrams and trigrams in order to create abbreviation mapping ######################
+### 1. buil bigrams and trigrams
 
-# 2. load our custom NER model
-
-nlp_ner = spacy.load("C:/Users/SEPA/lanchain_ir2/model-best")
-
-#test = all_files[1]
-#test = 'I have several years of experience with NLP and MLOps. Here I implemented a Text Classification Algorithm with BERT Algorithm. Moreover I have worked with AWS, Kubernetes and Docker.'
-extracted_entities_all = []
-for sample in all_files:
-    doc = nlp_ner(sample)
-    extracted_skills = []
-    for ent in doc.ents:
-        extracted_skills.append(ent.text)
-    if extracted_skills:
-        # Code to be executed if the list is not empty
-        extracted_skills = [element.replace(" ", "_").replace("-", "_") for element in extracted_skills] # build bigrams, trigramms automatically
-        extracted_entities_all.append(' '.join(extracted_skills))
-    else:
-        continue
-# extracted_entities_all[1]
-# build a data frame with this
-# consists of 494 examples
-df = pd.DataFrame(extracted_entities_all)
-df = df.rename(columns={0: 'skill_description'})
-df = df[df['skill_description'] != '']
-
-from stop_word_list import *
-from cleanText import *
-from cleanText import clean_skills
-# In the subsequent step, we will perform data cleaning by converting all characters to lowercase.
-# Furthermore, we will remove newline characters and punctuations (e.g., .,/) from the text.
-# Additionally, we will apply word lemmatization, which converts words like "running" or "ran" to their base form, such as "run".
-
-clean_df = clean_skills(df, 'skill_description')
-print(clean_df.iloc[0][0])
-
-
-####### bigram and trigram can be skipped and as NER Algorithm has already detected those ###########
-# bigram_scores
 df = pd.DataFrame(all_files)
 df = df.rename(columns={0: 'skill_description'})
 df = df[df['skill_description'] != '']
@@ -141,6 +108,7 @@ trigrams = [' '.join(x) for x in filtered_trigram.trigram.values if len(x[0]) > 
 # examples of bigrams
 print(bigrams[:20])
 
+### 2. Create abbreviation dictionary
 
 # haben ja bigramms schon durch unser named_entity_recognition (welchen wir noch durch unseren overlap finder weiter bereinigen müssen)
 # dann haber wir durch unseren bigram algorithmus noch bigrams erstellt.
@@ -168,6 +136,24 @@ mapping['gcp'] = 'google cloud platform'
 
 
 #### transform abbreviations to correct name
+# 2. load our custom NER model
+
+nlp_ner = spacy.load("C:/Users/SEPA/lanchain_ir2/model-best")
+#test = all_files[1]
+#test = 'I have several years of experience with NLP and MLOps. Here I implemented a Text Classification Algorithm with BERT Algorithm. Moreover I have worked with AWS, Kubernetes and Docker.'
+extracted_entities_all = []
+for sample in all_files:
+    doc = nlp_ner(sample)
+    extracted_skills = []
+    for ent in doc.ents:
+        extracted_skills.append(ent.text)
+    if extracted_skills:
+        # Code to be executed if the list is not empty
+        extracted_skills = [element.replace(" ", "_").replace("-", "_") for element in extracted_skills] # build bigrams, trigramms automatically
+        extracted_entities_all.append(' '.join(extracted_skills))
+    else:
+        continue
+
 df = pd.DataFrame(extracted_entities_all)
 df = df.rename(columns={0: 'skill_description'})
 df = df[df['skill_description'] != '']
@@ -178,7 +164,6 @@ all_transf_docs = []
 for doc in result:
     transformed_doc = [string.replace('_', ' ') for string in doc]
     all_transf_docs.append(transformed_doc)
-
 
 merged_list = [item for sublist in all_transf_docs for item in sublist]
 
@@ -193,12 +178,9 @@ for doc in merged_list:
             new_doc += ' ' + mapping.get(str.lower(), str)
     new_merged_list.append(new_doc)
 
-from gensim import corpora
 from collections import Counter
-import itertools
 skill_frequency = Counter(new_merged_list)
 unique_skills = list(skill_frequency.keys())
-
 
 # 2. Summarize/build clusters based on overlapping terms
 # Data Scientist selbe wie data science -> durch custom trained_embeddings und similarity scores mit threshold
