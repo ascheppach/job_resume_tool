@@ -141,68 +141,14 @@ trigrams = [' '.join(x) for x in filtered_trigram.trigram.values if len(x[0]) > 
 # examples of bigrams
 print(bigrams[:20])
 
-def replace_ngram(x):
-    for gram in trigrams:
-        x = x.replace(gram, '_'.join(gram.split()))
-    for gram in bigrams:
-        x = x.replace(gram, '_'.join(gram.split()))
-    return x
-reviews_w_ngrams = clean_df.copy()
-reviews_w_ngrams.skill_description = reviews_w_ngrams.skill_description.map(lambda x: replace_ngram(x))
-# tokenize reviews + remove stop words + remove names + remove words with less than 2 characters
-reviews_w_ngrams = reviews_w_ngrams.skill_description.map(lambda x: [word for word in x.split()\
-                                                 if word not in stop_word_list\
-                                                              and word not in english_names\
-                                                              and len(word) > 2])
 
 # haben ja bigramms schon durch unser named_entity_recognition (welchen wir noch durch unseren overlap finder weiter bereinigen müssen)
 # dann haber wir durch unseren bigram algorithmus noch bigrams erstellt.
 
-
-
-from gensim import corpora
-from collections import Counter
-import itertools
-series = clean_df['skill_description']
-split_series = series.str.split(' ')
-skill_list = list(split_series)
-merged_list = list(itertools.chain(*skill_list))
-skill_frequency = Counter(merged_list)
-unique_skills = list(skill_frequency.keys())
-transformed_list = [string.replace('_', ' ') for string in unique_skills]
-
 # 1. Abkürzungen identifizieren
 # 1.1 bigramms und trigramm erstellen auf basis des gesamten Textes
-# 1.2 für jeden dieser bigrams, trigrams
-
-# ['google cloud platform', 'gcp pipeline', 'amazon web services', 'aws ec2', 'python']
-#should result in ['google cloud platform', 'google cloud platform pipeline', 'amazon web services', 'amazon web services ec2', 'python']
-#original_list = ['google cloud platform', 'gcp pipeline', 'amazon web services', 'aws ec2', 'python']
-#original_list = ['google cloud platform', 'gcp pipeline', 'amazon web services', 'aws ec2', 'python']
-mapping = {}
-
-transformed_list = []
-
-bigrams
-for string in bigrams:
-    words = string.split()
-    transformed_words = []
-    for word in words:
-        if any(keyword in word.lower() for keyword in mapping.keys()):
-            for keyword in mapping.keys():
-                if keyword in word.lower():
-                    transformed_words.append(mapping[keyword])
-                    break
-        else:
-            transformed_words.append(word)
-            mapping[word.lower()] = word
-    transformed_string = ' '.join(transformed_words)
-    transformed_list.append(transformed_string)
-
-print(transformed_list)
-
-
-
+# 1.2 für jeden dieser bigrams, trigrams abkürzung erstellen und in mapping hinterlegen
+# 1.3 auf basis von originalem text die abkürzungen zu normalem begriff umwandeln
 #original_list = ['google cloud platform', 'gcp', 'amazon web services', 'aws ec2', 'python']
 mapping = {}
 def create_abbreviating_dictionary(mapping, list):
@@ -216,14 +162,45 @@ def create_abbreviating_dictionary(mapping, list):
     return mapping
 
 mapping = create_abbreviating_dictionary(mapping, trigrams)
+mapping['aws'] = 'amazon web services'
+mapping['gke'] = 'google kubernetes engine'
+mapping['gcp'] = 'google cloud platform'
 
 
+#### transform abbreviations to correct name
+df = pd.DataFrame(extracted_entities_all)
+df = df.rename(columns={0: 'skill_description'})
+df = df[df['skill_description'] != '']
+clean_df = clean_skills(df, 'skill_description')
 
-transformed_list = [mapping.get(string.lower(), string) for string in original_list]
-print(transformed_list)
+result = df['skill_description'].apply(lambda x: x.split())
+all_transf_docs = []
+for doc in result:
+    transformed_doc = [string.replace('_', ' ') for string in doc]
+    all_transf_docs.append(transformed_doc)
 
 
-# 2. Synonyme identifizieren
+merged_list = [item for sublist in all_transf_docs for item in sublist]
+
+new_merged_list = []
+for doc in merged_list:
+    # string = 'aws ec2'
+    new_doc = ''
+    for i,str in enumerate(doc.split()):
+        if i==0:
+            new_doc += mapping.get(str.lower(), str)
+        else:
+            new_doc += ' ' + mapping.get(str.lower(), str)
+    new_merged_list.append(new_doc)
+
+from gensim import corpora
+from collections import Counter
+import itertools
+skill_frequency = Counter(new_merged_list)
+unique_skills = list(skill_frequency.keys())
+
+
+# 2. Summarize/build clusters based on overlapping terms
 # Data Scientist selbe wie data science -> durch custom trained_embeddings und similarity scores mit threshold
 # Mit ChatGPT probieren, input geben und er soll synonyme zusammenfassen
 # Am besten: Machine Learning pipeline, Machine Learning models oder Microsoft Azure oder Azure Cloud könnte ich dadurch
@@ -245,5 +222,9 @@ def cluster_overlapping_strings(string_list):
         clusters.append(current_cluster)
     return clusters
 
-result_list = cluster_overlapping_strings(transformed_list)
+result_list = cluster_overlapping_strings(unique_skills)
 # muss nur noch darauf achten, dass es auch duplicate geben kann wie "Azure cloud" d.h. durch random prinzip einem zuordnen
+
+
+# if a listelement/cluster has more than 1 element, ask gpt return you a summarize term
+# then ask gpt to create clustering with hierarchies.
