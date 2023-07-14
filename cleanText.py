@@ -26,6 +26,18 @@ def clean_all(df, col_name):
 
     return df
 
+def clean_skills(df, col_name):
+
+    # df, col_name = reviews, 'reviewText'
+
+    # lowercase texts
+    df[col_name] = df[col_name].map(lambda x: x.lower())
+
+    # remove punctuation: entferne kommas, slash zeichen usw.
+    df[col_name] = df[col_name].map(punc_n)
+
+    return df
+
 
 def ascii_rm(comment):
 

@@ -58,6 +58,94 @@ df = pd.DataFrame(extracted_entities_all)
 df = df.rename(columns={0: 'skill_description'})
 df = df[df['skill_description'] != '']
 
+from stop_word_list import *
+from cleanText import *
+from cleanText import clean_skills
+# In the subsequent step, we will perform data cleaning by converting all characters to lowercase.
+# Furthermore, we will remove newline characters and punctuations (e.g., .,/) from the text.
+# Additionally, we will apply word lemmatization, which converts words like "running" or "ran" to their base form, such as "run".
+
+clean_df = clean_skills(df, 'skill_description')
+print(clean_df.iloc[0][0])
+
+
+# bigram_scores
+bigram_measures = nltk.collocations.BigramAssocMeasures()
+finder = nltk.collocations.BigramCollocationFinder.from_documents([comment.split() for comment in clean_df.skill_description])
+finder.apply_freq_filter(20)
+bigram_scores = finder.score_ngrams(bigram_measures.pmi)
+
+bigram_pmi = pd.DataFrame(bigram_scores)
+bigram_pmi.columns = ['bigram', 'pmi']
+bigram_pmi.sort_values(by='pmi', axis = 0, ascending = False, inplace = True)
+
+# trigram_scores
+trigram_measures = nltk.collocations.TrigramAssocMeasures()
+finder = nltk.collocations.TrigramCollocationFinder.from_documents([comment.split() for comment in clean_df.skill_description])
+finder.apply_freq_filter(20)
+trigram_scores = finder.score_ngrams(trigram_measures.pmi)
+
+trigram_pmi = pd.DataFrame(trigram_scores)
+trigram_pmi.columns = ['trigram', 'pmi']
+trigram_pmi.sort_values(by='pmi', axis = 0, ascending = False, inplace = True)
+
+# Filter for bigrams with only noun-type structures
+def bigram_filter(bigram):
+    tag = nltk.pos_tag(bigram)
+    if tag[0][1] not in ['JJ', 'NN'] and tag[1][1] not in ['NN']:
+        return False
+    if bigram[0] in stop_word_list or bigram[1] in stop_word_list:
+        return False
+    if 'n' in bigram or 't' in bigram:
+        return False
+    if 'PRON' in bigram:
+        return False
+    return True
+# Filter for trigrams with only noun-type structures
+def trigram_filter(trigram):
+    tag = nltk.pos_tag(trigram)
+    if tag[0][1] not in ['JJ', 'NN'] and tag[1][1] not in ['JJ','NN']:
+        return False
+    if trigram[0] in stop_word_list or trigram[-1] in stop_word_list or trigram[1] in stop_word_list:
+        return False
+    if 'n' in trigram or 't' in trigram:
+         return False
+    if 'PRON' in trigram:
+        return False
+    return True
+# Can set pmi threshold to whatever makes sense - eyeball through and select threshold where n-grams stop making sense
+# choose top 500 ngrams in this case ranked by PMI that have noun like structures
+filtered_bigram = bigram_pmi[bigram_pmi.apply(lambda bigram: \
+                                              bigram_filter(bigram['bigram'])\
+                                              and bigram.pmi > 5, axis = 1)][:500]
+
+filtered_trigram = trigram_pmi[trigram_pmi.apply(lambda trigram: \
+                                                 trigram_filter(trigram['trigram'])\
+                                                 and trigram.pmi > 5, axis = 1)][:500]
+
+
+bigrams = [' '.join(x) for x in filtered_bigram.bigram.values if len(x[0]) > 2 or len(x[1]) > 2]
+trigrams = [' '.join(x) for x in filtered_trigram.trigram.values if len(x[0]) > 2 or len(x[1]) > 2 and len(x[2]) > 2]
+# examples of bigrams
+print(bigrams[:10])
+
+def replace_ngram(x):
+    for gram in trigrams:
+        x = x.replace(gram, '_'.join(gram.split()))
+    for gram in bigrams:
+        x = x.replace(gram, '_'.join(gram.split()))
+    return x
+
+reviews_w_ngrams = clean_df.copy()
+reviews_w_ngrams.skill_description = reviews_w_ngrams.skill_description.map(lambda x: replace_ngram(x))
+# tokenize reviews + remove stop words + remove names + remove words with less than 2 characters
+reviews_w_ngrams = reviews_w_ngrams.skill_description.map(lambda x: [word for word in x.split()\
+                                                 if word not in stop_word_list\
+                                                              and word not in english_names\
+                                                              and len(word) > 2])
+
+
+
 
 from gensim import corpora
 from collections import Counter
@@ -98,22 +186,27 @@ print(overlapping_strings)
 # if they it also exists in this list ['Machine', 'Azure']. So the result would be to return me following list ['Machine', 'Machine'].
 import re
 
-string_list = ['Machine Learning pipeline', 'Machine Learning model']
+string_list = ['Machine Learning pipeline', 'Machine Learning model', 'Microsoft Azure', 'Azure Cloud', 'AWS', 'Cloud', 'Python']
 replace_list = ['Machine', 'Azure']
 
-overlap_list = []
+result_list = []
 
 for string in string_list:
     overlap_strings = [word for word in replace_list if re.search(r'\b{}\b'.format(word), string)]
-    overlap_list.extend(overlap_strings)
+    if overlap_strings:
+        result_list.extend(overlap_strings)
+    else:
+        result_list.append(string)
 
-print(overlap_list)
+print(result_list)
+
 
 # 2. Abkürzungen identifizieren
 # 2.1. Abbkürzungen finden: Alle Wörter, bei denen alle Buchstaben groß geschrieben sind: ML oder AWS
 # 2.2 Lange Schreibweise dazu finden: Den bigramm und trigramm Teil aus Machine Learning
 # Am besten: zuerst bigram und trigram herausfinden und dann einfach nur die Anfangsbuchstaben nehmen und als Abkürzung
 #            definieren
+
 
 # 3. Manuell eine Synonym Datenbank erstellen
 
