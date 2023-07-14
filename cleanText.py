@@ -34,7 +34,7 @@ def clean_skills(df, col_name):
     df[col_name] = df[col_name].map(lambda x: x.lower())
 
     # remove punctuation: entferne kommas, slash zeichen usw.
-    df[col_name] = df[col_name].map(punc_n)
+    df[col_name] = df[col_name].map(punc_skill)
 
     return df
 
@@ -59,6 +59,16 @@ def get_language(text):
 def punc_n(comment):
 
     regex = re.compile('[' + re.escape('!"#%&\'()*+,-./:;<=>?@[\\]^_`{|}~') + '0-9\\r\\t\\n]')
+    # comment = df.iloc[0][0]
+    nopunct = regex.sub(" ", comment)
+    nopunct_words = nopunct.split(' ')
+    filter_words = [word.strip() for word in nopunct_words if word != '']
+    words = ' '.join(filter_words)
+    return words
+
+def punc_skill(comment):
+
+    regex = re.compile('[' + re.escape('!"#%&\'()*+,-./:;<=>?@[\\]^`{|}~') + '\\r\\t\\n]')
     # comment = df.iloc[0][0]
     nopunct = regex.sub(" ", comment)
     nopunct_words = nopunct.split(' ')
