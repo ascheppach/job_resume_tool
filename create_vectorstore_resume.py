@@ -8,7 +8,9 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter, CharacterTex
 
 from dotenv import load_dotenv
 
-api_key = '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'
+import os
+import openai
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 def merge_hyphenated_words(text: str) -> str:
     return re.sub(r"(\w)-\n(\w)", r"\1\2", text)
@@ -106,7 +108,7 @@ def create_resume_vectorstore(resume_directory):
     document_chunks = text_to_wholeDocs(cleaned_text_pdf)
 
     # Step 3 + 4: Generate embeddings and store them in DB
-    embeddings = OpenAIEmbeddings(openai_api_key=api_key)
+    embeddings = OpenAIEmbeddings()
     vector_store = Chroma.from_documents(
         document_chunks,
         embeddings,

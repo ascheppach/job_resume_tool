@@ -3,11 +3,15 @@ from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
 import pandas as pd
 import matplotlib.pyplot as plt
-
+import os
+import openai
 from create_vectorstore_resume import create_resume_vectorstore
 from create_job_summary import create_vectorstore, make_chain
 
-api_key = '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'
+# api_key = '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'
+openai.api_key = os.getenv('OPENAI_API_KEY')
+
+
 
 ################### Create job vectorstore ###################
 open_position="C:/Users/SEPA/lanchain_ir2/Job_data/Research Scientist - NLP.txt"
@@ -24,12 +28,13 @@ required_skills = response['answer']
 
 ##################### Create resume vectorstore ################
 create_resume_vectorstore('C:/Users/SEPA/lanchain_ir2/Resume_data_pdf/')
-embedding = OpenAIEmbeddings(openai_api_key=api_key)
+embedding = OpenAIEmbeddings()
 resume_vector_store = Chroma(
     collection_name="resume-embeddings",
     embedding_function=embedding,
     persist_directory="embeddings/chroma",
 )
+
 
 retriever = resume_vector_store.as_retriever(search_kwargs={"k": 3})
 # docs = retriever.get_relevant_documents("I have one year of experience with NLP and MLOps. Moreover I have worked with AWS, Kubernetes and Docker.")

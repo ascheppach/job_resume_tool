@@ -14,8 +14,7 @@ from cleanText import clean_skills
 # 1. Get the data
 
 folder_path = 'C:/Users/SEPA/lanchain_ir2/Tech_data/ChatGPT_jira_stories'  # Replace with the path to your folder
-file_list = []
-
+all_files = []
 # Iterate over each file in the folder and append its content
 for filename in os.listdir(folder_path):
     # print(filename)
@@ -27,13 +26,9 @@ for filename in os.listdir(folder_path):
         # Open the file and read its contents
         with open(file_path, 'r') as file:
             content = file.read()
-            file_list.append(content)
+            content = content.split('Title')
+            all_files += [cont.replace("\nDescription: ", ". ") for cont in content]
 
-# create own examples for each Jira story (each new Title)
-all_files = []
-for file in file_list:
-    sample_list = file.split('Title')
-    all_files += [sample.replace("\nDescription: ", ". ") for sample in sample_list]
 
 ####################################### Create bigrams and trigrams in order to create abbreviation mapping ######################
 ### 1. buil bigrams and trigrams
@@ -46,7 +41,6 @@ for index, row in df.iterrows():
     # print(df.iloc[index,0])
     row['skill_description'] = row['skill_description'].replace("\n", " ")
     row['skill_description'] = row['skill_description'].replace("Description:", "")
-
 clean_df = clean_skills(df, 'skill_description')
 
 bigram_measures = nltk.collocations.BigramAssocMeasures()
@@ -92,8 +86,7 @@ def trigram_filter(trigram):
     if 'PRON' in trigram:
         return False
     return True
-# Can set pmi threshold to whatever makes sense - eyeball through and select threshold where n-grams stop making sense
-# choose top 500 ngrams in this case ranked by PMI that have noun like structures
+# Can set pmi threshold to whatever makes sense
 filtered_bigram = bigram_pmi[bigram_pmi.apply(lambda bigram: \
                                               bigram_filter(bigram['bigram'])\
                                               and bigram.pmi > 3, axis = 1)][:500]
@@ -109,23 +102,15 @@ trigrams = [' '.join(x) for x in filtered_trigram.trigram.values if len(x[0]) > 
 print(bigrams[:20])
 
 ### 2. Create abbreviation dictionary
-
-# haben ja bigramms schon durch unser named_entity_recognition (welchen wir noch durch unseren overlap finder weiter bereinigen müssen)
-# dann haber wir durch unseren bigram algorithmus noch bigrams erstellt.
-
-# 1. Abkürzungen identifizieren
 # 1.1 bigramms und trigramm erstellen auf basis des gesamten Textes
 # 1.2 für jeden dieser bigrams, trigrams abkürzung erstellen und in mapping hinterlegen
 # 1.3 auf basis von originalem text die abkürzungen zu normalem begriff umwandeln
-#original_list = ['google cloud platform', 'gcp', 'amazon web services', 'aws ec2', 'python']
 mapping = {}
 def create_abbreviating_dictionary(mapping, list):
     for string in list:
-        # print(string)
-        # string = 'aws ec2' 'aws ec2'
         words = string.split()
         if len(words) > 1:
-            abbreviation = ''.join(word[0] for word in words) # nimmt immer ersten buchstaben um abkürzung zu bauen
+            abbreviation = ''.join(word[0] for word in words)
             mapping[abbreviation.lower()] = string
     return mapping
 
@@ -137,56 +122,71 @@ mapping['gcp'] = 'google cloud platform'
 
 #### transform abbreviations to correct name
 # 2. load our custom NER model
-
 nlp_ner = spacy.load("C:/Users/SEPA/lanchain_ir2/model-best")
+regex = re.compile('[' + re.escape('!"#%&\'()*+,-./:;<=>?@[\\]^`{|}~') + '\\r\\t\\n]')
+
 #test = all_files[1]
 #test = 'I have several years of experience with NLP and MLOps. Here I implemented a Text Classification Algorithm with BERT Algorithm. Moreover I have worked with AWS, Kubernetes and Docker.'
 extracted_entities_all = []
-for sample in all_files:
+for sample in all_files: # list und jedes element ist
+    # sample = all_files[3]
     doc = nlp_ner(sample)
     extracted_skills = []
     for ent in doc.ents:
         extracted_skills.append(ent.text)
-    if extracted_skills:
-        # Code to be executed if the list is not empty
-        extracted_skills = [element.replace(" ", "_").replace("-", "_") for element in extracted_skills] # build bigrams, trigramms automatically
-        extracted_entities_all.append(' '.join(extracted_skills))
+    if extracted_skills: # Code to be executed if the list is not empty
+        #extracted_skills = [element.replace(' ', '_').replace("-", "_") for element in extracted_skills] # einzelne listenelemente mit "_"
+        #extracted_entities_all.append(' '.join(extracted_skills)) # wird gejoined
+        # extracted_skills = extracted_skills.lower()
+        # remove punctuation: entferne kommas, slash zeichen usw.
+        # df[col_name] = df[col_name].map(punc_skill)
+        extracted_skills = [element.lower() for element in extracted_skills]
+        extracted_skills = [regex.sub(" ", element) for element in extracted_skills]
+        extracted_entities_all.append(extracted_skills)
     else:
         continue
 
-df = pd.DataFrame(extracted_entities_all)
-df = df.rename(columns={0: 'skill_description'})
-df = df[df['skill_description'] != '']
-clean_df = clean_skills(df, 'skill_description')
+# comment = 'Time-Series Analysis Model'
 
-result = df['skill_description'].apply(lambda x: x.split())
-all_transf_docs = []
-for doc in result:
-    transformed_doc = [string.replace('_', ' ') for string in doc]
-    all_transf_docs.append(transformed_doc)
+# er wandelt zuerst in aws_ec2 um damit er später split machen kann ; dann wandelt er wieder in aws ec2 um damit er overlapping words machen kann
+# df = pd.DataFrame(extracted_entities_all)
+# df = df.rename(columns={0: 'skill_description'})
+# df = df[df['skill_description'] != '']
+# clean_df = clean_skills(df, 'skill_description')
+#result = clean_df['skill_description'].apply(lambda x: x.split())
 
-merged_list = [item for sublist in all_transf_docs for item in sublist]
+#all_transf_docs = []
+#for doc in result:
+#    transformed_doc = [string.replace('_', ' ') for string in doc]
+#    all_transf_docs.append(transformed_doc) # liste bei der alle listenelemente selber wieder eine liste ist mit ['aws ec2', 'deplyoment', ...]
 
-new_merged_list = []
-for doc in merged_list:
-    # string = 'aws ec2'
-    new_doc = ''
-    for i,str in enumerate(doc.split()):
-        if i==0:
-            new_doc += mapping.get(str.lower(), str)
-        else:
-            new_doc += ' ' + mapping.get(str.lower(), str)
-    new_merged_list.append(new_doc)
+merged_list = [item for sublist in extracted_entities_all for item in sublist] # damit wir nicht mehr jede dokument eine listenelement ist sonder jeder skill
+# ein listenelement
+
+# transform aws to Amazon Web Services
+def transformAbbreviations(skill_list):
+    updated_skill_list = []
+    for doc in skill_list:
+        # string = 'aws ec2'
+        new_term = ''
+        for i,str in enumerate(doc.split()):
+            if i==0:
+                new_term += mapping.get(str.lower(), str)
+            else:
+                new_term += ' ' + mapping.get(str.lower(), str)
+        updated_skill_list.append(new_term)
+    return updated_skill_list
 
 from collections import Counter
-skill_frequency = Counter(new_merged_list)
+transformed_skill_list = transformAbbreviations(merged_list)
+skill_frequency = Counter(transformed_skill_list)
 unique_skills = list(skill_frequency.keys())
 
 # 2. Summarize/build clusters based on overlapping terms
 # Data Scientist selbe wie data science -> durch custom trained_embeddings und similarity scores mit threshold
 # Mit ChatGPT probieren, input geben und er soll synonyme zusammenfassen
 # Am besten: Machine Learning pipeline, Machine Learning models oder Microsoft Azure oder Azure Cloud könnte ich dadurch
-# vereinen, indem ich erstmal "gemeinsamen Nenner" finde (Azure oder Machine Learning) un dann restliche
+# vereinen, indem ich erstmal "gemeinsamen Nenner" finde (Azure oder Machine Learning) und dann restliche
 # Wörter rausschmeiße (pipeline, models, Microsoft und Cloud)
 
 def cluster_overlapping_strings(string_list):
@@ -209,4 +209,113 @@ result_list = cluster_overlapping_strings(unique_skills)
 
 
 # if a listelement/cluster has more than 1 element, ask gpt return you a summarize term
-# then ask gpt to create clustering with hierarchies.
+import openai
+
+openai.api_key = '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'
+response_list = []
+for i, term_cluster in enumerate(result_list):
+    flag = True
+    while (flag):
+        try:
+            print(i)
+            # if i > 60:
+            #    continue
+            # term_cluster = string(result_list[2][0])
+            if len(term_cluster) > 1:
+                summarize_term = "What could be a summarizing term for following word cluster: {}? Please only return the summarizing term and no additional text. If not found, return 'Not a skill'."
+                result_string = summarize_term.format(term_cluster)
+                completions = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    temperature=0.0,
+                    messages=[
+                        {"role": "system",
+                         "content": "You are a helpful assistant for clustering und summarizing terms."},
+                        {"role": "user", "content": result_string}
+                    ]
+                )
+                message = completions.choices[0].message.content
+                if message != 'Not a skill':
+                    response_list.append(message)
+
+            else:
+                summarize_term = "Is this term describing a technical skill: {}? If not, return 'Not a skill'"
+                result_string = summarize_term.format(term_cluster)
+                completions = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    temperature=0.0,
+                    messages=[
+                        {"role": "system",
+                         "content": "You are a helpful assistant for clustering und summarizing terms."},
+                        {"role": "user", "content": result_string}
+                    ]
+                )
+                message = completions.choices[0].message.content
+                if message != 'Not a skill':
+                    response_list.append(term_cluster[0])
+            flag = False
+        except openai.error.OpenAIError as e:
+            print("OpenAI Server Error happened here.")
+
+
+import csv
+with open('response_list.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(response_list)
+
+# Opening the CSV file and reading the list back
+with open('response_list.csv', 'r') as file:
+    reader = csv.reader(file)
+    loaded_list = next(reader)
+
+example_response_list = ['EC2', 'S3', 'RDS', 'Lambda','Virtual Machines', 'Blob Storage', 'SQL Database', 'Functions',
+                         'Compute Engine', 'Cloud Storage', 'Cloud SQL', 'Cloud Functions',
+                         'Jenkins', 'GitLab CI/CD', 'Travis CI', 'Kubernetes', 'Docker Swarm', 'Amazon ECS',
+                         'Terraform', 'AWS CloudFormation', 'Azure Resource Manager','NumPy', 'Pandas', 'Scikit-learn',
+                         'React', 'Angular', 'Vue.js','SQL', 'GraphQL']
+
+example_clusters = {
+    'Cloud Services': {
+        'AWS Services': ['EC2', 'S3', 'RDS', 'Lambda'],
+        'Azure Services': ['Virtual Machines', 'Blob Storage', 'SQL Database', 'Functions'],
+        'Google Cloud Services': ['Compute Engine', 'Cloud Storage', 'Cloud SQL', 'Cloud Functions']
+    },
+    'DevOps Tools': {
+        'CI/CD': ['Jenkins', 'GitLab CI/CD', 'Travis CI'],
+        'Container Orchestration': ['Kubernetes', 'Docker Swarm', 'Amazon ECS'],
+        'Infrastructure as Code': ['Terraform', 'AWS CloudFormation', 'Azure Resource Manager']
+    },
+    'Programming Languages': {
+        'Python Ecosystem': ['NumPy', 'Pandas', 'Scikit-learn'],
+        'JavaScript Frameworks': ['React', 'Angular', 'Vue.js'],
+        'Data Query Languages': ['SQL', 'GraphQL']
+    }
+}
+
+import json
+example_clusters_string = json.dumps(example_clusters)
+
+# create skill_cluster based on the summarized terms.
+summarize_term = "Please cluster following skills and also include different hierarchy levels or subclusters: {}."
+result_string = summarize_term.format(response_list)
+# create example clustering
+example_result_string = summarize_term.format(example_response_list)
+completions = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    temperature=0.0,
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant for clustering und summarizing terms."},
+        {"role": "user", "content": example_result_string},
+        {"role": "assistant", "content": example_clusters_string},
+        {"role": "user", "content": result_string}
+    ]
+)
+message = completions.choices[0].message.content
+my_cluster_dict = json.loads(message)
+
+filename = 'my_cluster_dict.json'
+with open(filename, 'w') as json_file:
+    json.dump(my_cluster_dict, json_file)
+
+# Read the JSON data from the file
+with open(filename, 'r') as json_file:
+    my_dict_loaded = json.load(json_file)
