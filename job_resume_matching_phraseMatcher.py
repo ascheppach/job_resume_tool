@@ -18,6 +18,7 @@ import numpy as np
 # Function to read resumes from the folder one by one
 import pandas as pd
 
+
 # create DataFrame
 
 def compare_resumes_to_job(resumes_path, keyword_path):
