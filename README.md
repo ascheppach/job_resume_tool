@@ -27,6 +27,8 @@ Language embeddings are representations of words, phrases, or documents in a hig
 
 Following jupyter notebook shows a proof-of-concept of this feature: https://github.com/ascheppach/job_resume_tool/blob/main/Information%20Retrieval.ipynb
 
+![image](https://github.com/ascheppach/job_resume_tool/assets/56842416/89e3beb2-41cf-4f21-b05a-4c63d5d01d07)
+
 # 3. Information Extraction / Named Entity Recognition:
 In this notebook I will show a proof-of-conecept how to train an Named Entity Recognition (NER) algorithm in order to be able to extract all relevant skills from an employee or applicant in a fully automated way. In the next step I want to use these automatically detected skills for the creation of employee and project competence profiles.
 
