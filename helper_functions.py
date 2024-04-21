@@ -7,8 +7,6 @@ import json
 import openai
 from openai import OpenAI
 
-os.environ["OPENAI_API_KEY"] = "sk-proj-du7vCuzvzlYyPP5DnFhPT3BlbkFJgzB7F1h8kmePHWqYKYXY"
-
 # nltk.download('averaged_perceptron_tagger')
 
 def open_folder(folder_path):
