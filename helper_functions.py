@@ -3,8 +3,13 @@ import spacy
 import nltk
 import re
 from stop_word_list import *
+import json
+import openai
+from openai import OpenAI
 
+os.environ["OPENAI_API_KEY"] = "sk-proj-du7vCuzvzlYyPP5DnFhPT3BlbkFJgzB7F1h8kmePHWqYKYXY"
 
+# nltk.download('averaged_perceptron_tagger')
 
 def open_folder(folder_path):
     all_files = []
@@ -24,7 +29,7 @@ def open_folder(folder_path):
 
     return all_files
 
-nlp_ner = spacy.load("C:/Users/SEPA/lanchain_ir2/model-best")
+nlp_ner = spacy.load("/Users/A200319269/PycharmProjects/job_resume_tool/ner_models/model-best")
 regex = re.compile('[' + re.escape('!"#%&\'()*+,-./:;<=>?@[\\]^`{|}~') + '\\r\\t\\n]')
 
 def extract_skill_entities(all_files):
@@ -75,28 +80,34 @@ def trigram_filter(trigram):
     return True
 
 
-def create_abbreviating_dictionary(mapping, list):
+def create_abbreviating_dictionary(list):
+    mapping = {}
+
     for string in list:
         words = string.split()
         if len(words) > 1:
             abbreviation = ''.join(word[0] for word in words)
             mapping[abbreviation.lower()] = string
+    mapping['aws'] = 'amazon web services'
+    mapping['gke'] = 'google kubernetes engine'
+    mapping['gcp'] = 'google cloud platform'
     return mapping
 
 
-def transformAbbreviations(skill_list, mapping):
+def transformAbbreviations(skill_list):
+    mapping = {}
     updated_skill_list = []
     for doc in skill_list:
-        # string = 'aws ec2'
+        # doc = 'aws-ec2'
+        # str = 'aws'
         new_term = ''
-        for i,str in enumerate(doc.split()):
+        for i, str in enumerate(doc.split()):
             if i==0:
                 new_term += mapping.get(str.lower(), str)
             else:
                 new_term += ' ' + mapping.get(str.lower(), str)
         updated_skill_list.append(new_term)
     return updated_skill_list
-
 
 def cluster_overlapping_strings(string_list):
     clusters = []
@@ -114,60 +125,34 @@ def cluster_overlapping_strings(string_list):
     return clusters
 
 
-
-import openai
-openai.api_key = os.getenv('OPENAI_API_KEY')
-
 def summarize_skill_terms(result_list):
     response_list = []
     for i, term_cluster in enumerate(result_list):
-        flag = True
-        while (flag):
-            try:
-                print(i)
-                # if i > 60:
-                #    continue
-                # term_cluster = result_list[2][0]
-                if len(term_cluster) > 1:
-                    summarize_term = "What could be a summarizing term for following word cluster: {}? Please only return the summarizing term and no additional text. If not found, return 'Not a skill'."
-                    result_string = summarize_term.format(term_cluster)
-                    completions = openai.ChatCompletion.create(
-                        model="gpt-3.5-turbo",
-                        temperature=0.0,
-                        messages=[
-                            {"role": "system",
-                             "content": "You are a helpful assistant for clustering und summarizing terms."},
-                            {"role": "user", "content": result_string}
-                        ]
-                    )
-                    message = completions.choices[0].message.content
-                    if message != 'Not a skill':
-                        response_list.append(message)
+        print(i)
+        if i > 20:
+            continue
+        try:
+            if len(term_cluster) > 1:
+                prompt = "What could be a summarizing term for the following word cluster: {}? Please only return the summarizing term and no additional text. If not found, return 'Not a skill'."
+            else:
+                prompt = "Is this term describing a technical skill: {}? If not, return 'Not a skill'"
 
-                else:
-                    summarize_term = "Is this term describing a technical skill: {}? If not, return 'Not a skill'"
-                    result_string = summarize_term.format(term_cluster)
-                    completions = openai.ChatCompletion.create(
-                        model="gpt-3.5-turbo",
-                        temperature=0.0,
-                        messages=[
-                            {"role": "system",
-                             "content": "You are a helpful assistant for clustering und summarizing terms."},
-                            {"role": "user", "content": result_string}
-                        ]
-                    )
-                    message = completions.choices[0].message.content
-                    if message != 'Not a skill':
-                        response_list.append(term_cluster[0])
-                flag = False
-            except openai.error.OpenAIError as e:
-                print("OpenAI Server Error happened here.")
-
+            prompt = prompt.format(term_cluster)
+            client = OpenAI()
+            completions = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                temperature=0.0,
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant for clustering and summarizing terms."},
+                    {"role": "user", "content": prompt}
+                ]
+            )
+            message = completions.choices[0].message.content
+            if message != 'Not a skill':
+                response_list.append(message if len(term_cluster) > 1 else term_cluster[0])
+        except openai.error.OpenAIError as e:
+            print("OpenAI Server Error happened here.")
     return response_list
-
-
-import csv
-import json
 
 
 def create_skill_clusters(response_list):
@@ -203,7 +188,9 @@ def create_skill_clusters(response_list):
     result_string = summarize_term.format(response_list)
     # create example clustering
     example_result_string = summarize_term.format(example_response_list)
-    completions = openai.ChatCompletion.create(
+
+    client = OpenAI()
+    completions = client.chat.completions.create(
         model="gpt-3.5-turbo",
         temperature=0.0,
         messages=[

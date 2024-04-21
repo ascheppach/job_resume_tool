@@ -3,10 +3,15 @@ import spacy
 import nltk
 import re
 import pandas as pd
+import nltk
+nltk.download('stopwords')
 
-nlp = spacy.load('en_core_web_sm')
+
+
+#nlp = spacy.load('en_core_web_sm')
+nlp = spacy.load('en_core_web_lg')
+
 STOPWORDS_DICT = {lang: set(nltk.corpus.stopwords.words(lang)) for lang in nltk.corpus.stopwords.fileids()}
-
 
 def clean_all(df, col_name):
 

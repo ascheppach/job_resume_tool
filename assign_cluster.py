@@ -9,272 +9,186 @@ from stop_word_list import *
 from cleanText import *
 from cleanText import clean_skills
 import ast
-
 import json
-
-folder_path = 'C:/Users/SEPA/lanchain_ir2/Tech_data/ChatGPT_jira_stories'  # Replace with the path to your folder
 from helper_functions import open_folder
+from helper_functions import bigram_filter, trigram_filter
+from helper_functions import create_abbreviating_dictionary
+from helper_functions import extract_skill_entities
+from helper_functions import cluster_overlapping_strings
+from helper_functions import transformAbbreviations
+from collections import Counter
+from helper_functions import summarize_skill_terms
+from helper_functions import create_skill_clusters
+import openai
+
+
+
+folder_path = '/Users/A200319269/PycharmProjects/job_resume_tool/Tech_data/ChatGPT_jira_stories'  # Replace with the path to your folder
 all_files = open_folder(folder_path)
 
 
 ####################################### Create bigrams and trigrams in order to create abbreviation mapping ######################
 
-df = pd.DataFrame(all_files)
-df = df.rename(columns={0: 'skill_description'})
-df = df[df['skill_description'] != '']
-for index, row in df.iterrows():
-    # print(df.iloc[index,0])
-    row['skill_description'] = row['skill_description'].replace("\n", " ")
-    row['skill_description'] = row['skill_description'].replace("Description:", "")
-clean_df = clean_skills(df, 'skill_description')
+# clean data
+def clean_data(data):
+    df = pd.DataFrame(data)
+    df = df.rename(columns={0: 'skill_description'})
+    df = df[df['skill_description'] != '']
+    for index, row in df.iterrows():
+        # print(df.iloc[index,0])
+        row['skill_description'] = row['skill_description'].replace("\n", " ")
+        row['skill_description'] = row['skill_description'].replace("Description:", "")
+    clean_df = clean_skills(df, 'skill_description')
+    return clean_df
 
-bigram_measures = nltk.collocations.BigramAssocMeasures()
-finder = nltk.collocations.BigramCollocationFinder.from_documents([comment.split() for comment in clean_df.skill_description])
-finder.apply_freq_filter(20)
-bigram_scores = finder.score_ngrams(bigram_measures.pmi)
+clean_df = clean_data(all_files)
 
-bigram_pmi = pd.DataFrame(bigram_scores)
-bigram_pmi.columns = ['bigram', 'pmi']
-bigram_pmi.sort_values(by='pmi', axis = 0, ascending = False, inplace = True)
+def get_bigramm_scores(data):
+    bigram_measures = nltk.collocations.BigramAssocMeasures()
+    finder = nltk.collocations.BigramCollocationFinder.from_documents([comment.split() for comment in data.skill_description])
+    finder.apply_freq_filter(20)
+    bigram_scores = finder.score_ngrams(bigram_measures.pmi)
+    bigram_pmi = pd.DataFrame(bigram_scores)
+    bigram_pmi.columns = ['bigram', 'pmi']
+    bigram_pmi.sort_values(by='pmi', axis = 0, ascending = False, inplace = True)
+
+    # Can set pmi threshold to whatever makes sense
+    filtered_bigram = bigram_pmi[bigram_pmi.apply(lambda bigram: \
+                                                      bigram_filter(bigram['bigram']) \
+                                                      and bigram.pmi > 3, axis=1)][:500]
+    # Filter for bigrams with only noun-type structures
+    bigrams = [' '.join(x) for x in filtered_bigram.bigram.values if len(x[0]) > 2 or len(x[1]) > 2]
+
+    return bigrams
 
 # trigram_scores
-trigram_measures = nltk.collocations.TrigramAssocMeasures()
-finder = nltk.collocations.TrigramCollocationFinder.from_documents([comment.split() for comment in clean_df.skill_description])
-finder.apply_freq_filter(20)
-trigram_scores = finder.score_ngrams(trigram_measures.pmi)
+def get_trigramm_scores(data):
+    trigram_measures = nltk.collocations.TrigramAssocMeasures()
+    finder = nltk.collocations.TrigramCollocationFinder.from_documents([comment.split() for comment in data.skill_description])
+    finder.apply_freq_filter(20)
+    trigram_scores = finder.score_ngrams(trigram_measures.pmi)
 
-trigram_pmi = pd.DataFrame(trigram_scores)
-trigram_pmi.columns = ['trigram', 'pmi']
-trigram_pmi.sort_values(by='pmi', axis = 0, ascending = False, inplace = True)
+    trigram_pmi = pd.DataFrame(trigram_scores)
+    trigram_pmi.columns = ['trigram', 'pmi']
+    trigram_pmi.sort_values(by='pmi', axis = 0, ascending = False, inplace = True)
 
-# Filter for bigrams with only noun-type structures
-from helper_functions import bigram_filter, trigram_filter
+    filtered_trigram = trigram_pmi[trigram_pmi.apply(lambda trigram: \
+                                                         trigram_filter(trigram['trigram']) \
+                                                         and trigram.pmi > 3, axis=1)][:500]
+    trigrams = [' '.join(x) for x in filtered_trigram.trigram.values if
+                len(x[0]) > 2 or len(x[1]) > 2 and len(x[2]) > 2]
 
-# Can set pmi threshold to whatever makes sense
-filtered_bigram = bigram_pmi[bigram_pmi.apply(lambda bigram: \
-                                              bigram_filter(bigram['bigram'])\
-                                              and bigram.pmi > 3, axis = 1)][:500]
+    return trigrams
 
-filtered_trigram = trigram_pmi[trigram_pmi.apply(lambda trigram: \
-                                                 trigram_filter(trigram['trigram'])\
-                                                 and trigram.pmi > 3, axis = 1)][:500]
-
-
-bigrams = [' '.join(x) for x in filtered_bigram.bigram.values if len(x[0]) > 2 or len(x[1]) > 2]
-trigrams = [' '.join(x) for x in filtered_trigram.trigram.values if len(x[0]) > 2 or len(x[1]) > 2 and len(x[2]) > 2]
+bigrams = get_bigramm_scores(clean_df)
+trigrams = get_trigramm_scores(clean_df)
 # examples of bigrams
 print(bigrams[:20])
 
-### 2. Create abbreviation dictionary
-# 1.1 bigramms und trigramm erstellen auf basis des gesamten Textes
-# 1.2 für jeden dieser bigrams, trigrams abkürzung erstellen und in mapping hinterlegen
-# 1.3 auf basis von originalem text die abkürzungen zu normalem begriff umwandeln
-mapping = {}
-
-from helper_functions import create_abbreviating_dictionary
-
-mapping = create_abbreviating_dictionary(mapping, trigrams)
-mapping['aws'] = 'amazon web services'
-mapping['gke'] = 'google kubernetes engine'
-mapping['gcp'] = 'google cloud platform'
-
-
-#### transform abbreviations to correct name
-# 2. load our custom NER model
-
-#test = all_files[1]
-#test = 'I have several years of experience with NLP and MLOps. Here I implemented a Text Classification Algorithm with BERT Algorithm. Moreover I have worked with AWS, Kubernetes and Docker.'
-
-from helper_functions import extract_skill_entities
-
+abbreviation_dict = create_abbreviating_dictionary(trigrams)
 extracted_entities_all = extract_skill_entities(all_files)
 
-# comment = 'Time-Series Analysis Model'
-
-# er wandelt zuerst in aws_ec2 um damit er später split machen kann ; dann wandelt er wieder in aws ec2 um damit er overlapping words machen kann
-# df = pd.DataFrame(extracted_entities_all)
-# df = df.rename(columns={0: 'skill_description'})
-# df = df[df['skill_description'] != '']
-# clean_df = clean_skills(df, 'skill_description')
-#result = clean_df['skill_description'].apply(lambda x: x.split())
-
-#all_transf_docs = []
-#for doc in result:
-#    transformed_doc = [string.replace('_', ' ') for string in doc]
-#    all_transf_docs.append(transformed_doc) # liste bei der alle listenelemente selber wieder eine liste ist mit ['aws ec2', 'deplyoment', ...]
-
-merged_list = [item for sublist in extracted_entities_all for item in sublist] # damit wir nicht mehr jede dokument eine listenelement ist sonder jeder skill
-# ein listenelement
-
-# transform aws to Amazon Web Services
-
-from helper_functions import transformAbbreviations
-from collections import Counter
-transformed_skill_list = transformAbbreviations(merged_list, mapping)
+# flatten list of list
+merged_list = [item for sublist in extracted_entities_all for item in sublist]
+transformed_skill_list = transformAbbreviations(merged_list)
 skill_frequency = Counter(transformed_skill_list)
 unique_skills = list(skill_frequency.keys())
 
 # 2. Summarize/build clusters based on overlapping terms
-# Data Scientist selbe wie data science -> durch custom trained_embeddings und similarity scores mit threshold
-# Mit ChatGPT probieren, input geben und er soll synonyme zusammenfassen
-# Am besten: Machine Learning pipeline, Machine Learning models oder Microsoft Azure oder Azure Cloud könnte ich dadurch
-# vereinen, indem ich erstmal "gemeinsamen Nenner" finde (Azure oder Machine Learning) und dann restliche
-# Wörter rausschmeiße (pipeline, models, Microsoft und Cloud)
-
-from helper_functions import cluster_overlapping_strings
-
+# "Data Scientist" should count the same as "data science"
+# use custom trained_embeddings and similarity scores with threshold
+# 'Machine Learning pipeline' and 'Machine Learning models' can be clustered to 'Machine Learning', by finding the
+# the common words ( Machine Learning) and drop the rest
 result_list = cluster_overlapping_strings(unique_skills)
 # muss nur noch darauf achten, dass es auch duplicate geben kann wie "Azure cloud" d.h. durch random prinzip einem zuordnen
 
 # if a listelement/cluster has more than 1 element, ask gpt return you a summarize term
-
-from helper_functions import summarize_skill_terms
 response_list = summarize_skill_terms(result_list)
 
-from helper_functions import create_skill_clusters
 my_cluster_dict = create_skill_clusters(response_list)
 
 
 # 2. Dann für meinen CV NER applien
-
-import numpy as np
-from sklearn.cluster import KMeans
-import spacy
-import nltk
-import re
-import pandas as pd
-import os
-from stop_word_list import *
-from cleanText import *
-from cleanText import clean_skills
-import json
-
-
 ################################################## Step 1: Get Skill data ##########################################
 # 1. Get the data
 
-folder_path = 'C:/Users/SEPA/lanchain_ir2/Tech_data/ChatGPT_jira_stories'  # Replace with the path to your folder
-
-from helper_functions import open_folder
-
+folder_path = '/Users/A200319269/PycharmProjects/job_resume_tool/Tech_data/ChatGPT_jira_stories' # Replace with the path to your folder
 all_files = open_folder(folder_path)
-
 
 ####################################### Create bigrams and trigrams in order to create abbreviation mapping ######################
 ### 1. buil bigrams and trigrams
 
-df = pd.DataFrame(all_files)
-df = df.rename(columns={0: 'skill_description'})
-df = df[df['skill_description'] != '']
-for index, row in df.iterrows():
-    # print(df.iloc[index,0])
-    row['skill_description'] = row['skill_description'].replace("\n", " ")
-    row['skill_description'] = row['skill_description'].replace("Description:", "")
-clean_df = clean_skills(df, 'skill_description')
+def clean_data(data):
+    df = pd.DataFrame(data)
+    df = df.rename(columns={0: 'skill_description'})
+    df = df[df['skill_description'] != '']
+    for index, row in df.iterrows():
+        # print(df.iloc[index,0])
+        row['skill_description'] = row['skill_description'].replace("\n", " ")
+        row['skill_description'] = row['skill_description'].replace("Description:", "")
+    clean_df = clean_skills(df, 'skill_description')
 
-bigram_measures = nltk.collocations.BigramAssocMeasures()
-finder = nltk.collocations.BigramCollocationFinder.from_documents([comment.split() for comment in clean_df.skill_description])
-finder.apply_freq_filter(20)
-bigram_scores = finder.score_ngrams(bigram_measures.pmi)
+    return clean_df
 
-bigram_pmi = pd.DataFrame(bigram_scores)
-bigram_pmi.columns = ['bigram', 'pmi']
-bigram_pmi.sort_values(by='pmi', axis = 0, ascending = False, inplace = True)
+def create_bigramms(data):
+    bigram_measures = nltk.collocations.BigramAssocMeasures()
+    finder = nltk.collocations.BigramCollocationFinder.from_documents([comment.split() for comment in data.skill_description])
+    finder.apply_freq_filter(20)
+    bigram_scores = finder.score_ngrams(bigram_measures.pmi)
 
-# trigram_scores
-trigram_measures = nltk.collocations.TrigramAssocMeasures()
-finder = nltk.collocations.TrigramCollocationFinder.from_documents([comment.split() for comment in clean_df.skill_description])
-finder.apply_freq_filter(20)
-trigram_scores = finder.score_ngrams(trigram_measures.pmi)
+    bigram_pmi = pd.DataFrame(bigram_scores)
+    bigram_pmi.columns = ['bigram', 'pmi']
+    bigram_pmi.sort_values(by='pmi', axis = 0, ascending = False, inplace = True)
 
-trigram_pmi = pd.DataFrame(trigram_scores)
-trigram_pmi.columns = ['trigram', 'pmi']
-trigram_pmi.sort_values(by='pmi', axis = 0, ascending = False, inplace = True)
+    filtered_bigram = bigram_pmi[bigram_pmi.apply(lambda bigram: \
+                                                      bigram_filter(bigram['bigram']) \
+                                                      and bigram.pmi > 3, axis=1)][:500]
+    bigrams = [' '.join(x) for x in filtered_bigram.bigram.values if len(x[0]) > 2 or len(x[1]) > 2]
 
-# Filter for bigrams with only noun-type structures
-from helper_functions import bigram_filter, trigram_filter
+    return bigrams
 
-# Can set pmi threshold to whatever makes sense
-filtered_bigram = bigram_pmi[bigram_pmi.apply(lambda bigram: \
-                                              bigram_filter(bigram['bigram'])\
-                                              and bigram.pmi > 3, axis = 1)][:500]
+def create_trigramms(data):
+    trigram_measures = nltk.collocations.TrigramAssocMeasures()
+    finder = nltk.collocations.TrigramCollocationFinder.from_documents([comment.split() for comment in clean_df.skill_description])
+    finder.apply_freq_filter(20)
+    trigram_scores = finder.score_ngrams(trigram_measures.pmi)
 
-filtered_trigram = trigram_pmi[trigram_pmi.apply(lambda trigram: \
-                                                 trigram_filter(trigram['trigram'])\
-                                                 and trigram.pmi > 3, axis = 1)][:500]
+    trigram_pmi = pd.DataFrame(trigram_scores)
+    trigram_pmi.columns = ['trigram', 'pmi']
+    trigram_pmi.sort_values(by='pmi', axis = 0, ascending = False, inplace = True)
 
 
-bigrams = [' '.join(x) for x in filtered_bigram.bigram.values if len(x[0]) > 2 or len(x[1]) > 2]
-trigrams = [' '.join(x) for x in filtered_trigram.trigram.values if len(x[0]) > 2 or len(x[1]) > 2 and len(x[2]) > 2]
-# examples of bigrams
+    filtered_trigram = trigram_pmi[trigram_pmi.apply(lambda trigram: \
+                                                     trigram_filter(trigram['trigram'])\
+                                                     and trigram.pmi > 3, axis = 1)][:500]
+
+    trigrams = [' '.join(x) for x in filtered_trigram.trigram.values if len(x[0]) > 2 or len(x[1]) > 2 and len(x[2]) > 2]
+
+    return trigrams
+
+
+cleaned_df = clean_data(all_files)
+bigrams = create_bigramms(cleaned_df)
+trigrams = create_trigramms(cleaned_df)
+
 print(bigrams[:20])
 
-### 2. Create abbreviation dictionary
-# 1.1 bigramms und trigramm erstellen auf basis des gesamten Textes
-# 1.2 für jeden dieser bigrams, trigrams abkürzung erstellen und in mapping hinterlegen
-# 1.3 auf basis von originalem text die abkürzungen zu normalem begriff umwandeln
-mapping = {}
-
-from helper_functions import create_abbreviating_dictionary
-
-mapping = create_abbreviating_dictionary(mapping, trigrams)
-mapping['aws'] = 'amazon web services'
-mapping['gke'] = 'google kubernetes engine'
-mapping['gcp'] = 'google cloud platform'
-
-
-#### transform abbreviations to correct name
-# 2. load our custom NER model
-
-#test = all_files[1]
-#test = 'I have several years of experience with NLP and MLOps. Here I implemented a Text Classification Algorithm with BERT Algorithm. Moreover I have worked with AWS, Kubernetes and Docker.'
-
-from helper_functions import extract_skill_entities
-
+mapping = create_abbreviating_dictionary(trigrams)
 extracted_entities_all = extract_skill_entities(all_files)
-
-# comment = 'Time-Series Analysis Model'
-
-# er wandelt zuerst in aws_ec2 um damit er später split machen kann ; dann wandelt er wieder in aws ec2 um damit er overlapping words machen kann
-# df = pd.DataFrame(extracted_entities_all)
-# df = df.rename(columns={0: 'skill_description'})
-# df = df[df['skill_description'] != '']
-# clean_df = clean_skills(df, 'skill_description')
-#result = clean_df['skill_description'].apply(lambda x: x.split())
-
-#all_transf_docs = []
-#for doc in result:
-#    transformed_doc = [string.replace('_', ' ') for string in doc]
-#    all_transf_docs.append(transformed_doc) # liste bei der alle listenelemente selber wieder eine liste ist mit ['aws ec2', 'deplyoment', ...]
-
-merged_list = [item for sublist in extracted_entities_all for item in sublist] # damit wir nicht mehr jede dokument eine listenelement ist sonder jeder skill
-# ein listenelement
-
-# transform aws to Amazon Web Services
-
-from helper_functions import transformAbbreviations
-from collections import Counter
-transformed_skill_list = transformAbbreviations(merged_list, mapping)
+# flatten list of list
+merged_list = [item for sublist in extracted_entities_all for item in sublist]
+transformed_skill_list = transformAbbreviations(merged_list)
 skill_frequency = Counter(transformed_skill_list)
 unique_skills = list(skill_frequency.keys())
 
 # 2. Summarize/build clusters based on overlapping terms
-# Data Scientist selbe wie data science -> durch custom trained_embeddings und similarity scores mit threshold
-# Mit ChatGPT probieren, input geben und er soll synonyme zusammenfassen
-# Am besten: Machine Learning pipeline, Machine Learning models oder Microsoft Azure oder Azure Cloud könnte ich dadurch
-# vereinen, indem ich erstmal "gemeinsamen Nenner" finde (Azure oder Machine Learning) und dann restliche
-# Wörter rausschmeiße (pipeline, models, Microsoft und Cloud)
-
-from helper_functions import cluster_overlapping_strings
-
+# "Data Scientist" should be same as "data science" (-> through custom trained_embeddings and similarity scores with threshold)
+# "Machine Learning pipeline", "Machine Learning models" can be clustered to "machine learning" by using the common words and
+# removing the other words
 result_list = cluster_overlapping_strings(unique_skills)
-# muss nur noch darauf achten, dass es auch duplicate geben kann wie "Azure cloud" d.h. durch random prinzip einem zuordnen
-
+# needs adjustment, so that also duplicates like "Azure cloud" is possible
 # if a listelement/cluster has more than 1 element, ask gpt return you a summarize term
-
-from helper_functions import summarize_skill_terms
 response_list = summarize_skill_terms(result_list)
-from helper_functions import create_skill_clusters
 my_cluster_dict = create_skill_clusters(response_list)
 
 
@@ -294,7 +208,6 @@ for ent in doc.ents:
 print(extracted_skills_cv)
 
 # 3. Danach meinen CV zu den clustern entweder assignen, oder neuen cluster hinzufügen.
-import openai
 # erstmal aus dem dictionary lediglich die cluster rausextrahieren und eben nicht die einzelnen werte
 merged_clusters = list(my_cluster_dict.keys())
 sub_clusters = list(list(my_cluster_dict[str(dict)].keys()) for dict in my_cluster_dict)

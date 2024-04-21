@@ -1,7 +1,3 @@
-# Schritt 1:
-# Für spaCy NER gelabelte Daten haben. Einmal mit diesem Tool labeln. Dann mal mit ChatGPT versuchen und schauen was
-# seine Ergebnisse sind im Vergleich zu wie ich es gelabelt habe
-
 
 import spacy
 from spacy.tokens import DocBin
