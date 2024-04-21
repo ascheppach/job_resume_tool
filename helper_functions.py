@@ -7,8 +7,6 @@ import json
 import openai
 from openai import OpenAI
 
-# nltk.download('averaged_perceptron_tagger')
-
 def open_folder(folder_path):
     all_files = []
     # Iterate over each file in the folder and append its content
