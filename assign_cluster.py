@@ -117,7 +117,6 @@ all_files = open_folder(folder_path)
 
 ####################################### Create bigrams and trigrams in order to create abbreviation mapping ######################
 ### 1. buil bigrams and trigrams
-
 def clean_data(data):
     df = pd.DataFrame(data)
     df = df.rename(columns={0: 'skill_description'})
