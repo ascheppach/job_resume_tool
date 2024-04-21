@@ -13,7 +13,6 @@ def open_folder(folder_path):
     for filename in os.listdir(folder_path):
         # print(filename)
         if filename.endswith('.txt'):
-        #if filename == 'cloud.txt' or filename == 'DataScience.txt':
             # print(filename)
             file_path = os.path.join(folder_path, filename)
 
