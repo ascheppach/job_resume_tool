@@ -11,7 +11,6 @@ from cleanText import clean_skills
 import ast
 import json
 from helper_functions import open_folder
-from helper_functions import bigram_filter, trigram_filter
 from helper_functions import create_abbreviating_dictionary
 from helper_functions import extract_skill_entities
 from helper_functions import cluster_overlapping_strings
@@ -26,20 +25,6 @@ import openai
 folder_path = '/Users/A200319269/PycharmProjects/job_resume_tool/Tech_data/ChatGPT_jira_stories'  # Replace with the path to your folder
 all_files = open_folder(folder_path)
 
-
-####################################### Create bigrams and trigrams in order to create abbreviation mapping ######################
-
-# clean data
-def clean_data(data):
-    df = pd.DataFrame(data)
-    df = df.rename(columns={0: 'skill_description'})
-    df = df[df['skill_description'] != '']
-    for index, row in df.iterrows():
-        # print(df.iloc[index,0])
-        row['skill_description'] = row['skill_description'].replace("\n", " ")
-        row['skill_description'] = row['skill_description'].replace("Description:", "")
-    clean_df = clean_skills(df, 'skill_description')
-    return clean_df
 
 clean_df = clean_data(all_files)
 
@@ -192,12 +177,13 @@ my_cluster_dict = create_skill_clusters(response_list)
 
 
 ########################################################### ab hier ####################################################
-filename = 'C:/Users/SEPA/lanchain_ir2/my_cluster_dict_new.json'
+# save cluster-dict
+filename = '/Users/A200319269/PycharmProjects/job_resume_tool/my_cluster_dict_new.json'
 with open(filename, 'r') as json_file:
     my_cluster_dict = json.load(json_file)
 
-nlp_ner = spacy.load("C:/Users/SEPA/topic_modeling/model-best")
-file_path = 'C:/Users/SEPA/lanchain_ir2/CV_Scheppach_text.txt'
+nlp_ner = spacy.load("/Users/A200319269/PycharmProjects/job_resume_tool/ner_models/model-best")
+file_path = '/Users/A200319269/PycharmProjects/job_resume_tool/Resume_data_pdf/CV_Scheppach_text.txt'
 with open(file_path, 'r') as file:
     content = file.read()
 doc = nlp_ner(content)

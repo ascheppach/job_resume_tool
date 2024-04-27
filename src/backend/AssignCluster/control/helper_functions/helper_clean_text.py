@@ -6,8 +6,6 @@ import pandas as pd
 import nltk
 nltk.download('stopwords')
 
-
-
 #nlp = spacy.load('en_core_web_sm')
 nlp = spacy.load('en_core_web_lg')
 
@@ -43,7 +41,6 @@ def clean_skills(df, col_name):
 
     return df
 
-
 def ascii_rm(comment):
 
     if type(comment) != str:
@@ -53,7 +50,6 @@ def ascii_rm(comment):
         comment = comment.encode('ascii', errors='ignore')
 
     return comment
-
 
 def get_language(text):
 
@@ -80,7 +76,6 @@ def punc_skill(comment):
     filter_words = [word.strip() for word in nopunct_words if word != '']
     words = ' '.join(filter_words)
     return words
-
 
 def lemma(comment):
     # comment = df.iloc[0][0].astype(str)
