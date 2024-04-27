@@ -13,19 +13,19 @@ class SkillClusterCreatorBA:
     def __init__(self, folder_path):
         self.folder_path = folder_path
 
-    def summarize_skill_terms(result_list):
-        response_list = []
-        for i, term_cluster in enumerate(result_list):
+    def summarize_skill_terms(self, skill_list):
+        summarized_skills = []
+        for i, skill_cluster in enumerate(skill_list):
             print(i)
             if i > 20:
                 continue
             try:
-                if len(term_cluster) > 1:
+                if len(skill_cluster) > 1:
                     prompt = "What could be a summarizing term for the following word cluster: {}? Please only return the summarizing term and no additional text. If not found, return 'Not a skill'."
                 else:
                     prompt = "Is this term describing a technical skill: {}? If not, return 'Not a skill'"
 
-                prompt = prompt.format(term_cluster)
+                prompt = prompt.format(skill_cluster)
                 client = OpenAI()
                 completions = client.chat.completions.create(
                     model="gpt-3.5-turbo",
@@ -38,14 +38,14 @@ class SkillClusterCreatorBA:
                 )
                 message = completions.choices[0].message.content
                 if message != 'Not a skill':
-                    response_list.append(message if len(term_cluster) > 1 else term_cluster[0])
+                    summarized_skills.append(message if len(skill_cluster) > 1 else skill_cluster[0])
             except openai.error.OpenAIError as e:
                 print("OpenAI Server Error happened here.")
-        return response_list
+        return summarized_skills
 
-    def create_skill_clusters(response_list):
+    def create_skill_clusters(self, skill_list):
 
-        example_response_list = ['EC2', 'S3', 'RDS', 'Lambda', 'Virtual Machines', 'Blob Storage', 'SQL Database',
+        example_skills = ['EC2', 'S3', 'RDS', 'Lambda', 'Virtual Machines', 'Blob Storage', 'SQL Database',
                                  'Functions',
                                  'Compute Engine', 'Cloud Storage', 'Cloud SQL', 'Cloud Functions',
                                  'Jenkins', 'GitLab CI/CD', 'Travis CI', 'Kubernetes', 'Docker Swarm', 'Amazon ECS',
@@ -72,12 +72,8 @@ class SkillClusterCreatorBA:
         }
 
         example_clusters_string = json.dumps(example_clusters)
-
-        # create skill_cluster based on the summarized terms.
-        summarize_term = "Please cluster following skills and also include different hierarchy levels or subclusters: {}."
-        result_string = summarize_term.format(response_list)
-        # create example clustering
-        example_result_string = summarize_term.format(example_response_list)
+        task = "Please cluster following skills and also include different hierarchy levels or subclusters: {}.".format(skill_list)
+        example_task = task.format(example_skills)
 
         client = OpenAI()
         completions = client.chat.completions.create(
@@ -85,28 +81,28 @@ class SkillClusterCreatorBA:
             temperature=0.0,
             messages=[
                 {"role": "system", "content": "You are a helpful assistant for clustering und summarizing terms."},
-                {"role": "user", "content": example_result_string},
+                {"role": "user", "content": example_task},
                 {"role": "assistant", "content": example_clusters_string},
-                {"role": "user", "content": result_string}
+                {"role": "user", "content": task}
             ]
         )
         message = completions.choices[0].message.content
-        my_cluster_dict = json.loads(message)
+        cluster_dict = json.loads(message)
 
-        return my_cluster_dict
+        return cluster_dict
 
     def create_skill_cluster(self):
-        all_files = open_folder(self.folder_path)
-        clean_df = clean_data(all_files)
-        bigrams = get_bigramms(clean_df)
-        trigrams = get_trigramms(clean_df)
+        skill_files = open_folder(self.folder_path)
+        skill_files_cleaned = clean_data(skill_files)
+        bigrams = get_bigramms(skill_files_cleaned)
+        trigrams = get_trigramms(skill_files_cleaned)
         abbreviation_dict = create_abbreviating_dictionary(trigrams)
-        extracted_entities_all = extract_skill_entities(all_files)
-        merged_list = [item for sublist in extracted_entities_all for item in sublist]
-        transformed_skill_list = transformAbbreviations(merged_list)
+        extracted_entities_all = extract_skill_entities(skill_files)
+        flattened_skill_list = [item for sublist in extracted_entities_all for item in sublist]
+        transformed_skill_list = transformAbbreviations(flattened_skill_list)
         skill_frequency = Counter(transformed_skill_list)
         unique_skills = list(skill_frequency.keys())
-        result_list = cluster_overlapping_strings(unique_skills)
-        response_list = self.summarize_skill_terms(result_list)
-        my_cluster_dict = self.create_skill_clusters(response_list)
-        return my_cluster_dict
+        unique_skill_list = cluster_overlapping_strings(unique_skills)
+        summarized_skill_list = self.summarize_skill_terms(unique_skill_list)
+        cluster_dict = self.create_skill_clusters(summarized_skill_list)
+        return cluster_dict
