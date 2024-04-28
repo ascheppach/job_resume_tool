@@ -8,6 +8,9 @@ from collections import Counter
 import json
 import openai
 from openai import OpenAI
+import os
+openai.api_key = os.getenv('OPENAI_API_KEY')
+# print(os.getenv('OPENAI_API_KEY'))
 
 class SkillClusterCreatorBA:
     def __init__(self, folder_path):
@@ -39,8 +42,8 @@ class SkillClusterCreatorBA:
                 message = completions.choices[0].message.content
                 if message != 'Not a skill':
                     summarized_skills.append(message if len(skill_cluster) > 1 else skill_cluster[0])
-            except openai.error.OpenAIError as e:
-                print("OpenAI Server Error happened here.")
+            except Exception as e:
+                print("OpenAI Server Error happened here:", e)
         return summarized_skills
 
     def create_skill_clusters(self, skill_list):

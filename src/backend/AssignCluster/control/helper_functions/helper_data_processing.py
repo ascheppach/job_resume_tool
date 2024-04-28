@@ -1,6 +1,7 @@
 from stop_word_list import *
 import pandas as pd
 import os
+from src.backend.AssignCluster.control.helper_functions.helper_clean_text import clean_skills
 
 def open_folder(folder_path):
     all_files = []

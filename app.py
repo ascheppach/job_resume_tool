@@ -1,5 +1,5 @@
 from flask import Flask, request, send_file
-import PyPDF2
+#import PyPDF2
 import json
 from job_resume_matching_phraseMatcher import compare_resumes_to_job, sort_applicants, create_plot_resume_to_job
 
